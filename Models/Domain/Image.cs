@@ -2,10 +2,11 @@
 
 namespace Lagalt_Backend.Models.Domain
 {
-    [Table("User")]
-    public class User
+    [Table("Image")]
+    public class Image
     {
         public int Id { get; set; }
         public string Description { get; set; }
+        public string Url { get; set; }
     }
 }
