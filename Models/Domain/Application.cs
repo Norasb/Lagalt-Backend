@@ -6,6 +6,6 @@ namespace Lagalt_Backend.Models.Domain
     public class Application
     {
         public int Id { get; set; }
-        public string Motivation { get; set; }
+        public string Motivation { get; set; } = null!;
     }
 }

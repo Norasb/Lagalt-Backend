@@ -6,12 +6,12 @@ namespace Lagalt_Backend.Models.Domain
     public class Project
     {
         public int Id { get; set; }
-        public string Field { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Caption { get; set; }
+        public string Field { get; set; } = null!;
+        public string Title { get; set; } = null!;
+        public string Description { get; set; } = null!;
+        public string Caption { get; set; } = null!;
         public DateTime DOC { get; set; }
-        public string Progress { get; set; }
-        public string Tags { get; set; }
+        public string Progress { get; set; } = null!;
+        public string Tags { get; set; } = null!;
     }
 }
