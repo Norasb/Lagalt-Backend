@@ -4,6 +4,7 @@ using Lagalt_Backend.Services.ImageServices;
 using Lagalt_Backend.Services.Projects;
 using Lagalt_Backend.Services.UserServices;
 using Microsoft.EntityFrameworkCore;
+using Lagalt_Backend.Services.Skills;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,7 @@ builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IProjectService, ProjectService>();
 builder.Services.AddTransient<IMessageService, MessageService>();
 builder.Services.AddTransient<IImageService, ImageService>();
+builder.Services.AddTransient<ISkillService, SkillService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
