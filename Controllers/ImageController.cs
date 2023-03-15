@@ -16,12 +16,10 @@ namespace Lagalt_Backend.Controllers
     [ApiController]
     public class ImageController : ControllerBase
     {
-        private readonly LagAltDbContext _context;
         private readonly IImageService _imageService;
 
-        public ImageController(LagAltDbContext context, IImageService imageService)
+        public ImageController(IImageService imageService)
         {
-            _context = context;
             _imageService = imageService;
         }
 
@@ -60,8 +58,6 @@ namespace Lagalt_Backend.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(image).State = EntityState.Modified;
-
             try
             {
                 await _imageService.UpdateAsync(image);
@@ -92,7 +88,7 @@ namespace Lagalt_Backend.Controllers
         {
             try
             {
-                await _imageService.DeleteAsync(id);
+                await _imageService.DeleteByIdAsync(id);
                 return NoContent();
             } catch (Exception ex)
             {
@@ -103,11 +99,6 @@ namespace Lagalt_Backend.Controllers
                         Status = (int)HttpStatusCode.NotFound
                     });
             }
-        }
-
-        private bool ImageExists(int id)
-        {
-            return _context.Images.Any(e => e.Id == id);
         }
     }
 }

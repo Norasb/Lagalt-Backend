@@ -19,7 +19,7 @@ namespace Lagalt_Backend.Services.ImageServices
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteByIdAsync(int id)
         {
             var image = await _context.Images.FindAsync(id);
 
