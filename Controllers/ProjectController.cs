@@ -71,7 +71,7 @@ namespace Lagalt_Backend.Controllers
         {
             try
             {
-                await _projectService.DeleteByIdAsync(id);
+                await _projectService.DeleteAsync(id);
                 return NoContent();
             } 
             catch (Exception ex)
