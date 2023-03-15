@@ -36,7 +36,7 @@ namespace Lagalt_Backend.Services.UserServices
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteByIdAsync(int id)
         {
             var user = await _context.Users.FindAsync(id);
 
