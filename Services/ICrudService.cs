@@ -27,6 +27,6 @@
         /// Deletes an instance of an entity
         /// </summary>
         /// <param name="id"></param>
-        Task DeleteAsync(ID id);
+        Task DeleteByIdAsync(ID id);
     }
 }
