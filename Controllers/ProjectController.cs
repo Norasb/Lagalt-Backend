@@ -49,7 +49,7 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateMovie(int id, Project project)
+        public async Task<ActionResult> UpdateProject(int id, Project project)
         {
             try
             {
