@@ -2,19 +2,19 @@
 using Lagalt_Backend.Models.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace Lagalt_Backend.Services.Projects
+namespace Lagalt_Backend.Services.Messages
 {
-    public class ProjectService : IProjectService
+    public class MessageService : IMessageService
     {
 
         private readonly LagAltDbContext _context;
 
-        public ProjectService(LagAltDbContext context)
+        public MessageService(LagAltDbContext context)
         {
             _context = context;
         }
 
-        public async Task AddAsync(Project obj)
+        public async Task AddAsync(Message obj)
         {
             await _context.AddAsync(obj);
             await _context.SaveChangesAsync();
@@ -22,31 +22,31 @@ namespace Lagalt_Backend.Services.Projects
 
         public async Task DeleteByIdAsync(int id)
         {
-            var project = await _context.Projects.FindAsync(id);
+            var message = await _context.Messages.FindAsync(id);
 
-            if (project == null)
+            if (message == null)
             {
                 throw new EntryPointNotFoundException();
             }
 
-            _context.Projects.Remove(project);
+            _context.Messages.Remove(message);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<ICollection<Project>> GetAllAsync()
+        public async Task<ICollection<Message>> GetAllAsync()
         {
-            return await _context.Projects
+            return await _context.Messages
                 .ToListAsync();
         }
 
-        public async Task<Project> GetByIdAsync(int id)
+        public async Task<Message> GetByIdAsync(int id)
         {
-            return await _context.Projects
-                .Where(p => p.Id == id)
+            return await _context.Messages
+                .Where(x => x.Id == id)
                 .FirstAsync();
         }
 
-        public async Task UpdateAsync(Project obj)
+        public async Task UpdateAsync(Message obj)
         {
             _context.Entry(obj).State = EntityState.Modified;
             await _context.SaveChangesAsync();
