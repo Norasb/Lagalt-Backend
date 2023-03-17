@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Lagalt_Backend.Models;
 using Lagalt_Backend.Models.Domain;
 using Lagalt_Backend.Services.PortfolioServices;
+using System.Net;
 
 namespace Lagalt_Backend.Controllers
 {
@@ -22,42 +23,41 @@ namespace Lagalt_Backend.Controllers
             _portfolioService = portfolioService;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Portfolio>> PostPortfolio(Portfolio portfolio)
-        {
-            await _portfolioService.AddAsync(portfolio);
-            return CreatedAtAction("GetPortfolioByID", new { id = portfolio.Id }, portfolio);
-        }
-        /*
+
+        
         // GET: api/Portfolios
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Portfolio>>> GetPortfolios()
         {
-          if (_portfolioServices.Portfolios == null)
-          {
-              return NotFound();
-          }
-            return await _portfolioServices.Portfolios.ToListAsync();
+            return Ok(await(_portfolioService.GetAllAsync()));
         }
 
+        [HttpPost]
+        public async Task<ActionResult<Portfolio>> PostPortfolio(Portfolio portfolio)
+        {
+            await _portfolioService.AddAsync(portfolio);
+            return CreatedAtAction("GetPortfolio", new { id = portfolio.Id }, portfolio);
+        }
+        
         // GET: api/Portfolios/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Portfolio>> GetPortfolio(int id)
         {
-          if (_portfolioServices.Portfolios == null)
-          {
-              return NotFound();
-          }
-            var portfolio = await _portfolioServices.Portfolios.FindAsync(id);
-
-            if (portfolio == null)
+            try
             {
-                return NotFound();
+                return Ok(await _portfolioService.GetByIdAsync(id));
             }
-
-            return portfolio;
+            catch (Exception ex)
+            {
+                return NotFound(
+                    new ProblemDetails()
+                    {
+                        Detail = ex.Message,
+                        Status = (int)HttpStatusCode.NotFound
+                    });
+            }
         }
-
+        
         // PUT: api/Portfolios/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -68,27 +68,22 @@ namespace Lagalt_Backend.Controllers
                 return BadRequest();
             }
 
-            _portfolioServices.Entry(portfolio).State = EntityState.Modified;
-
             try
             {
-                await _portfolioServices.SaveChangesAsync();
+                await _portfolioService.UpdateAsync(portfolio);
+                return NoContent();
+
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!PortfolioExists(id))
+                return NotFound(new ProblemDetails()
                 {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+                    Detail = ex.Message,
+                    Status = ((int)HttpStatusCode.NotFound)
+                });
+            };
         }
-
+        
         // POST: api/Portfolios
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
 
@@ -97,26 +92,21 @@ namespace Lagalt_Backend.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePortfolio(int id)
         {
-            if (_portfolioServices.Portfolios == null)
+            try
             {
-                return NotFound();
+                await _portfolioService.DeleteByIdAsync(id);
+                return NoContent();
             }
-            var portfolio = await _portfolioServices.Portfolios.FindAsync(id);
-            if (portfolio == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                return NotFound(
+                    new ProblemDetails()
+                    {
+                        Detail = ex.Message,
+                        Status = ((int)HttpStatusCode.NotFound)
+                    });
             }
-
-            _portfolioServices.Portfolios.Remove(portfolio);
-            await _portfolioServices.SaveChangesAsync();
-
-            return NoContent();
         }
-
-        private bool PortfolioExists(int id)
-        {
-            return (_portfolioServices.Portfolios?.Any(e => e.Id == id)).GetValueOrDefault();
-        }*/
     }
 }
         

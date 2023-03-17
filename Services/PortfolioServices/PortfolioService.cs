@@ -1,5 +1,6 @@
 ﻿using Lagalt_Backend.Models;
 using Lagalt_Backend.Models.Domain;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 
 namespace Lagalt_Backend.Services.PortfolioServices
@@ -15,13 +16,18 @@ namespace Lagalt_Backend.Services.PortfolioServices
         
         public async Task<ICollection<Portfolio>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return (ICollection<Portfolio>)await _context.Portfolios.ToListAsync();
         }
        
 
         public async Task<Portfolio> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            if (!await PortfolioExists(id))
+            {
+                throw new Exception("Portfolio not found");
+            }
+
+            return await _context.Portfolios.FindAsync(id);
         }
 
         public async Task AddAsync(Portfolio obj)
@@ -32,12 +38,30 @@ namespace Lagalt_Backend.Services.PortfolioServices
 
         public async Task UpdateAsync(Portfolio obj)
         {
-            throw new NotImplementedException();
+            if (!await PortfolioExists(obj.Id))
+            {
+                throw new Exception("Portfolio not found");
+
+            }
+            _context.Entry(obj).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var portfolio = await _context.Portfolios.FindAsync(id);
+
+            if (portfolio == null)
+            {
+                throw new Exception("Portfolio not found");
+            }
+
+            _context.Portfolios.Remove(portfolio);
+            await _context.SaveChangesAsync();
+        }
+        public async Task<bool> PortfolioExists(int id)
+        {
+            return await _context.Portfolios.AnyAsync(u => u.Id == id);
         }
     }
 
