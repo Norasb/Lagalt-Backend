@@ -1,37 +1,66 @@
-﻿using Lagalt_Backend.Models.Domain;
+﻿using Lagalt_Backend.Models;
+using Lagalt_Backend.Models.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace Lagalt_Backend.Services.ApplicationServices
 {
     public class ApplicationService : IApplicationService
     {
-        public Task AddAsync(Application obj)
+        private readonly LagAltDbContext _context;
+
+        public ApplicationService(LagAltDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task<bool> ApplicationExists(int id)
+        public async Task AddAsync(Application obj)
         {
-            throw new NotImplementedException();
+            await _context.Applications.AddAsync(obj);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var application = await _context.Applications.FindAsync(id);
+
+            if (application == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            _context.Applications.Remove(application);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<ICollection<Application>> GetAllAsync()
+        public async Task<ICollection<Application>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Applications.ToListAsync();
         }
 
-        public Task<Application> GetByIdAsync(int id)
+        public async Task<Application> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            if (!await ApplicationExists(id))
+            {
+                throw new Exception("Application not found");
+            }
+
+            return await _context.Applications.FindAsync(id);
         }
 
-        public Task UpdateAsync(Application obj)
+        public async Task UpdateAsync(Application obj)
         {
-            throw new NotImplementedException();
+            if (!await ApplicationExists(obj.Id))
+            {
+                throw new Exception("Application not found");
+            }
+
+            _context.Entry(obj).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> ApplicationExists(int id)
+        {
+            return await _context.Applications.AnyAsync(a => a.Id == id);
         }
     }
 }

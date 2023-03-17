@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Lagalt_Backend.Models;
 using Lagalt_Backend.Models.Domain;
+using Lagalt_Backend.Services.ApplicationServices;
+using System.Net;
 
 namespace Lagalt_Backend.Controllers
 {
@@ -14,32 +16,36 @@ namespace Lagalt_Backend.Controllers
     [ApiController]
     public class ApplicationController : ControllerBase
     {
-        private readonly IApplicationService;
+        private readonly IApplicationService _applicationService;
 
-        public ApplicationController(LagAltDbContext context)
+        public ApplicationController(IApplicationService applicationService)
         {
-            _context = context;
+            _applicationService = applicationService;
         }
 
         // GET: api/Application
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Application>>> GetApplications()
         {
-            return await _context.Applications.ToListAsync();
+            return Ok(await _applicationService.GetAllAsync());
         }
 
         // GET: api/Application/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Application>> GetApplication(int id)
         {
-            var application = await _context.Applications.FindAsync(id);
-
-            if (application == null)
+            try
             {
-                return NotFound();
+                return Ok(await _applicationService.GetByIdAsync(id));
+            } catch (Exception ex)
+            {
+                return NotFound(
+                    new ProblemDetails()
+                    {
+                        Detail = ex.Message,
+                        Status = (int)HttpStatusCode.NotFound
+                    });
             }
-
-            return application;
         }
 
         // PUT: api/Application/5
@@ -52,22 +58,19 @@ namespace Lagalt_Backend.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(application).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _applicationService.UpdateAsync(application);
+                return NoContent();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!ApplicationExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound(
+                    new ProblemDetails()
+                    {
+                        Detail = ex.Message,
+                        Status = (int)HttpStatusCode.NotFound
+                    });
             }
 
             return NoContent();
@@ -78,9 +81,7 @@ namespace Lagalt_Backend.Controllers
         [HttpPost]
         public async Task<ActionResult<Application>> PostApplication(Application application)
         {
-            _context.Applications.Add(application);
-            await _context.SaveChangesAsync();
-
+            await _applicationService.AddAsync(application);
             return CreatedAtAction("GetApplication", new { id = application.Id }, application);
         }
 
@@ -88,21 +89,21 @@ namespace Lagalt_Backend.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteApplication(int id)
         {
-            var application = await _context.Applications.FindAsync(id);
-            if (application == null)
+            try
             {
-                return NotFound();
+                await _applicationService.DeleteByIdAsync(id);
+                return NoContent();
+            } catch (Exception ex)
+            {
+                return NotFound(
+                    new ProblemDetails()
+                    {
+                        Detail = ex.Message,
+                        Status = (int)HttpStatusCode.NotFound
+                    });
             }
 
-            _context.Applications.Remove(application);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool ApplicationExists(int id)
-        {
-            return _context.Applications.Any(e => e.Id == id);
+            
         }
     }
 }

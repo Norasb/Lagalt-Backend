@@ -1,4 +1,5 @@
 using Lagalt_Backend.Models;
+using Lagalt_Backend.Services.ApplicationServices;
 using Lagalt_Backend.Services.Projects;
 using Lagalt_Backend.Services.UserServices;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ builder.Services.AddDbContext<LagAltDbContext>(
             );
 
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IApplicationService, ApplicationService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
