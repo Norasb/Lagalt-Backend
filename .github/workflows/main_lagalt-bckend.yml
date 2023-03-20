@@ -30,7 +30,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_8e65cb917ac14dc2aff346ebd843d52d }}/norasb/lagalt-backend:${{ github.sha }}
+        tags: index.docker.io/norasb/lagalt-backend:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -48,4 +48,4 @@ jobs:
         app-name: 'lagalt-bckend'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_4f76691461074a269882093ad027c986 }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_8e65cb917ac14dc2aff346ebd843d52d }}/norasb/lagalt-backend:${{ github.sha }}'
+        images: 'index.docker.io/norasb/lagalt-backend:${{ github.sha }}'
