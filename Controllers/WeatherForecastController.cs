@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Lagalt_Backend.Controllers {
     [ApiController]
-    [Route("[controller]")]
+    [Route("weather")]
     public class WeatherForecastController : ControllerBase {
         private static readonly string[] Summaries = new[]
         {
@@ -15,7 +15,7 @@ namespace Lagalt_Backend.Controllers {
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
+        [HttpGet]
         public IEnumerable<WeatherForecast> Get() {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast {
                 Date = DateTime.Now.AddDays(index),

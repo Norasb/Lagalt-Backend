@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<LagAltDbContext>(
-                opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("LagAltDb"))
+                opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("lagalt"))
             );
 
 builder.Services.AddTransient<IUserService, UserService>();
