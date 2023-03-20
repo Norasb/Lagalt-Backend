@@ -1,4 +1,4 @@
-﻿# Article: https://medium.com/rockedscience/docker-ci-cd-pipeline-with-github-actions-6d4cd1731030
+﻿# Article : https://medium.com/rockedscience/docker-ci-cd-pipeline-with-github-actions-6d4cd1731030
 name: Build and push Docker image upon release
 
 on:
