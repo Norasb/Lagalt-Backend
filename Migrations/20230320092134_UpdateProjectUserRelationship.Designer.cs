@@ -4,6 +4,7 @@ using Lagalt_Backend.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lagalt_Backend.Migrations
 {
     [DbContext(typeof(LagAltDbContext))]
-    partial class LagAltDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230320092134_UpdateProjectUserRelationship")]
+    partial class UpdateProjectUserRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -149,9 +152,6 @@ namespace Lagalt_Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PortfolioId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Progress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -168,8 +168,6 @@ namespace Lagalt_Backend.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PortfolioId");
 
                     b.HasIndex("UserId");
 
@@ -294,10 +292,6 @@ namespace Lagalt_Backend.Migrations
 
             modelBuilder.Entity("Lagalt_Backend.Models.Domain.Project", b =>
                 {
-                    b.HasOne("Lagalt_Backend.Models.Domain.Portfolio", null)
-                        .WithMany("Projects")
-                        .HasForeignKey("PortfolioId");
-
                     b.HasOne("Lagalt_Backend.Models.Domain.User", "Owner")
                         .WithMany("OwnedProjects")
                         .HasForeignKey("UserId");
@@ -333,11 +327,6 @@ namespace Lagalt_Backend.Migrations
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Lagalt_Backend.Models.Domain.Portfolio", b =>
-                {
-                    b.Navigation("Projects");
                 });
 
             modelBuilder.Entity("Lagalt_Backend.Models.Domain.Project", b =>

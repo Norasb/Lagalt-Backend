@@ -9,12 +9,12 @@ namespace Lagalt_Backend.Models
         {
         }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Project> Projects { get; set; }
-        public DbSet<Message> Messages { get; set; }
-        public DbSet<Portfolio> Portfolio { get; set; }
-        public DbSet<Skill> Skills { get; set; }
-        public DbSet<Application> Applications { get; set; }
-        public DbSet<Image> Images { get; set; }
+        public DbSet<User> Users { get; set; } = null!;
+        public DbSet<Project> Projects { get; set; } = null!;
+        public DbSet<Message> Messages { get; set; } = null!;
+        public DbSet<Portfolio> Portfolios { get; set; } = null!;
+        public DbSet<Skill> Skills { get; set; } = null!;
+        public DbSet<Application> Applications { get; set; } = null!;
+        public DbSet<Image> Images { get; set; } = null!;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.Build.Construction;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lagalt_Backend.Models.Domain
 {
@@ -7,5 +8,14 @@ namespace Lagalt_Backend.Models.Domain
     {
         public int Id { get; set; }
         public string Description { get; set; } = null!;
+
+        // Relationships
+        public int UserId { get; set; }
+        public User User { get; set; }
+
+        public int ProjectId { get; set; }
+        public ICollection<Project> Projects { get; set; }
+
+
     }
 }
