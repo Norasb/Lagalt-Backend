@@ -1,10 +1,8 @@
-﻿using Microsoft.Build.Construction;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Lagalt_Backend.Models.Domain;
 
-namespace Lagalt_Backend.Models.Domain
+namespace Lagalt_Backend.Models.Dto.Portfolio
 {
-    [Table("Portfolio")]
-    public class Portfolio
+    public class PortfolioDTO
     {
         public int Id { get; set; }
         public string Description { get; set; } = null!;
@@ -15,7 +13,5 @@ namespace Lagalt_Backend.Models.Domain
 
         public int? ProjectId { get; set; }
         public ICollection<Project>? Projects { get; set; }
-
-
     }
 }
