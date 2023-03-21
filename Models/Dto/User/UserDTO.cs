@@ -1,7 +1,8 @@
-﻿using Lagalt_Backend.Models.Domain;
+﻿
+using Lagalt_Backend.Models.Domain;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Lagalt_Backend.Models.DTOs.Users
+namespace Lagalt_Backend.Models.Dto.User
 {
     public class UserDTO
     {
