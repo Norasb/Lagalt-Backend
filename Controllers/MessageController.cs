@@ -51,17 +51,29 @@ namespace Lagalt_Backend.Controllers
         [HttpPost]
         public async Task<ActionResult> AddMessage(MessagePostDto postMessage)
         {
-            Message message = _mapper.Map<Message>(postMessage);
-            await _messageService.AddAsync(message);
+            Message message = new Message()
+            {
+                DOC = DateTime.Now,
+                Text = postMessage.Text,
+                UserId = postMessage.UserId,
+            };
+
+            await _messageService.AddAsync(_mapper.Map<Message>(message));
             return CreatedAtAction("GetMessageById", new { id = message.Id }, message);
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateMessage(int id, MessagePutDto putMessage)
         {
+            Message existingMessage = _messageService.GetByIdAsync(id).Result;
+
+            existingMessage.Id = id;
+            existingMessage.Text = putMessage.Text;
+            existingMessage.DOC = DateTime.Now;
+
             try
             {
-                await _messageService.UpdateAsync(_mapper.Map<Message>(putMessage));
+                await _messageService.UpdateAsync(_mapper.Map<Message>(existingMessage));
                 return NoContent();
             } catch (Exception ex)
             {
@@ -70,6 +82,7 @@ namespace Lagalt_Backend.Controllers
                      {
                          Detail = ex.Message,
                          Status = ((int)HttpStatusCode.NoContent)
+                        
                      });
             }
         }
