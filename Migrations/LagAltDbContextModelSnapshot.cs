@@ -353,8 +353,7 @@ namespace Lagalt_Backend.Migrations
 
                     b.Navigation("OwnedProjects");
 
-                    b.Navigation("Portfolio")
-                        .IsRequired();
+                    b.Navigation("Portfolio");
                 });
 #pragma warning restore 612, 618
         }
