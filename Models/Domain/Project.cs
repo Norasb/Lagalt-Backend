@@ -22,8 +22,8 @@ namespace Lagalt_Backend.Models.Domain
         public int? UserId { get; set; }
 
         [InverseProperty("ContributedProjects")]
-        public ICollection<User> Contributors { get; set; }
+        public ICollection<User>? Contributors { get; set; }
         
-        public ICollection<Image> Images { get; set; }
+        public ICollection<Image>? Images { get; set; }
     }
 }
