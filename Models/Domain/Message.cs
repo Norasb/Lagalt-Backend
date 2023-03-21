@@ -8,5 +8,9 @@ namespace Lagalt_Backend.Models.Domain
         public int Id { get; set; }
         public DateTime DOC { get; set; }
         public string Text { get; set; } = null!;
+
+        // Relationships
+        public int UserId { get; set; }
+        public User User { get; set; }
     }
 }
