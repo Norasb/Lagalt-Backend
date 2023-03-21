@@ -72,8 +72,6 @@ namespace Lagalt_Backend.Controllers
                         Status = (int)HttpStatusCode.NotFound
                     });
             }
-
-            return NoContent();
         }
 
         // POST: api/Application

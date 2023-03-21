@@ -16,6 +16,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<LagAltDbContext>(
                 opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("lagalt"))
             );
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IProjectService, ProjectService>();
