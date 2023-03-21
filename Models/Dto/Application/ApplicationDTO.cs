@@ -1,9 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Lagalt_Backend.Models.Domain;
 
-namespace Lagalt_Backend.Models.Domain
+namespace Lagalt_Backend.Models.Dto.Application
 {
-    [Table("Application")]
-    public class Application
+    public class ApplicationDTO
     {
         public int Id { get; set; }
         public string Motivation { get; set; } = null!;
