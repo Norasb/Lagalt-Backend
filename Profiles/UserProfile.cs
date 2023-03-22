@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Lagalt_Backend.Models.Domain;
-using Lagalt_Backend.Models.DTOs.Users;
+using Lagalt_Backend.Models.Dto.User;
 using Microsoft.OpenApi.Writers;
 
 namespace Lagalt_Backend.Profiles
