@@ -9,6 +9,7 @@ namespace Lagalt_Backend.Models.Domain
         public string Name { get; set; } = null!;
 
         // Relationships
+        [InverseProperty("Skills")]
         public ICollection<User>? Users { get; set; }
     }
 }

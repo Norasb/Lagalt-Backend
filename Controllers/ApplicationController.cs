@@ -14,7 +14,7 @@ using Lagalt_Backend.Models.Dto.Application;
 
 namespace Lagalt_Backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/applications")]
     [ApiController]
     public class ApplicationController : ControllerBase
     {

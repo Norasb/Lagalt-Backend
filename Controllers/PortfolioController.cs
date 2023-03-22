@@ -14,7 +14,7 @@ using Lagalt_Backend.Models.Dto.Portfolio;
 
 namespace Lagalt_Backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/portfolios")]
     [ApiController]
     public class PortfolioController : ControllerBase
     {

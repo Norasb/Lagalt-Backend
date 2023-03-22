@@ -8,9 +8,7 @@ namespace Lagalt_Backend.Profiles
     {
         public MessageProfile()
         {
-            CreateMap<MessagePostDto, Message>()
-                .ForMember(m => m.UserId, opt => opt
-                .MapFrom(dto => dto.UserId));
+            CreateMap<MessagePostDto, Message>();
             CreateMap<MessagePutDto, Message>();
             CreateMap<Message, MessageDto>()
                 .ForMember(dto => dto.User, opt => opt

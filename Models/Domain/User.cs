@@ -9,6 +9,7 @@ namespace Lagalt_Backend.Models.Domain
         public string Description { get; set; } = null!;
 
         // Relationships
+        [InverseProperty("User")]
         public Portfolio? Portfolio { get; set; }
 
         [InverseProperty("Owner")]
@@ -16,11 +17,14 @@ namespace Lagalt_Backend.Models.Domain
         
         [InverseProperty("Contributors")]
         public ICollection<Project>? ContributedProjects { get; set; } = new List<Project>();
-        
+
+        [InverseProperty("User")]
         public ICollection<Message>? Messages { get; set; } = new List<Message>();
-        
+
+        [InverseProperty("User")]
         public ICollection<Application>? Applications { get; set; } = new List<Application>();
-        
+
+        [InverseProperty("Users")]
         public ICollection<Skill>? Skills { get; set; } = new List<Skill>();
     }
 }

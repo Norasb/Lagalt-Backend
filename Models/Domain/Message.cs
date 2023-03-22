@@ -11,6 +11,7 @@ namespace Lagalt_Backend.Models.Domain
 
         // Relationships
         public int UserId { get; set; }
+        [InverseProperty("Messages")]
         public User User { get; set; } = null!;
     }
 }

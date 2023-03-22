@@ -22,10 +22,18 @@ namespace Lagalt_Backend.Models.Domain
         public int UserId { get; set; }
 
         [InverseProperty("ContributedProjects")]
-        public ICollection<User>? Contributors { get; set; }
-        
-        public ICollection<Image>? Images { get; set; }
+        public ICollection<User>? Contributors { get; set; } = new List<User>();
 
+        [InverseProperty("Project")]
+        public ICollection<Image>? Images { get; set; } = new List<Image>();
+
+        [InverseProperty("Projects")]
         public ICollection<Tag>? Tags { get; set; } = new List<Tag>();
+
+        [InverseProperty("Projects")]
+        public ICollection<Portfolio>? Portfolio { get; set; } = new List<Portfolio>();
+
+        [InverseProperty("Project")]
+        public ICollection<Application>? Applications { get; set; } = new List<Application>();
     }
 }

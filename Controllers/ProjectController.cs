@@ -7,7 +7,7 @@ using System.Net;
 
 namespace Lagalt_Backend.Controllers
 {
-    [Route("projects")]
+    [Route("api/projects")]
     [ApiController]
     public class ProjectController : ControllerBase
     {

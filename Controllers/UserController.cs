@@ -14,7 +14,7 @@ using Lagalt_Backend.Models.Dto.User;
 
 namespace Lagalt_Backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/users")]
     [ApiController]
     public class UserController : ControllerBase
     {
