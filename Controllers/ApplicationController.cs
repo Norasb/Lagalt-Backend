@@ -9,6 +9,8 @@ using Lagalt_Backend.Models;
 using Lagalt_Backend.Models.Domain;
 using Lagalt_Backend.Services.ApplicationServices;
 using System.Net;
+using AutoMapper;
+using Lagalt_Backend.Models.Dto.Application;
 
 namespace Lagalt_Backend.Controllers
 {
@@ -17,26 +19,30 @@ namespace Lagalt_Backend.Controllers
     public class ApplicationController : ControllerBase
     {
         private readonly IApplicationService _applicationService;
+        private readonly IMapper _mapper;
 
-        public ApplicationController(IApplicationService applicationService)
+        public ApplicationController(IApplicationService applicationService, IMapper mapper)
         {
             _applicationService = applicationService;
+            _mapper = mapper;
         }
 
         // GET: api/Application
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Application>>> GetApplications()
+        public async Task<ActionResult<IEnumerable<ApplicationDTO>>> GetApplications()
         {
-            return Ok(await _applicationService.GetAllAsync());
+            return Ok(
+                _mapper.Map<List<ApplicationDTO>>(
+                await _applicationService.GetAllAsync()));
         }
 
         // GET: api/Application/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Application>> GetApplication(int id)
+        public async Task<ActionResult<ApplicationDTO>> GetApplication(int id)
         {
             try
             {
-                return Ok(await _applicationService.GetByIdAsync(id));
+                return Ok(_mapper.Map<ApplicationDTO>(await _applicationService.GetByIdAsync(id)));
             } catch (Exception ex)
             {
                 return NotFound(
@@ -49,18 +55,17 @@ namespace Lagalt_Backend.Controllers
         }
 
         // PUT: api/Application/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutApplication(int id, Application application)
+        public async Task<IActionResult> PutApplication(int id, ApplicationPutDTO applicationDto)
         {
-            if (id != application.Id)
+            if (id != applicationDto.Id)
             {
                 return BadRequest();
             }
 
             try
             {
-                await _applicationService.UpdateAsync(application);
+                await _applicationService.UpdateAsync(_mapper.Map<Application>(applicationDto));
                 return NoContent();
             }
             catch (Exception ex)
@@ -75,10 +80,10 @@ namespace Lagalt_Backend.Controllers
         }
 
         // POST: api/Application
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Application>> PostApplication(Application application)
+        public async Task<ActionResult<ApplicationPostDTO>> PostApplication(ApplicationPostDTO applicationDto)
         {
+            Application application = _mapper.Map<Application>(applicationDto);
             await _applicationService.AddAsync(application);
             return CreatedAtAction("GetApplication", new { id = application.Id }, application);
         }
