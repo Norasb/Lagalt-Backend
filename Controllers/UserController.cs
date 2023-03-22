@@ -10,7 +10,7 @@ using Lagalt_Backend.Models.Domain;
 using Lagalt_Backend.Services.UserServices;
 using System.Net;
 using AutoMapper;
-using Lagalt_Backend.Models.DTOs.Users;
+using Lagalt_Backend.Models.Dto.User;
 
 namespace Lagalt_Backend.Controllers
 {
