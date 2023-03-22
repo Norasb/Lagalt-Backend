@@ -1,4 +1,5 @@
 ﻿
+
 using Lagalt_Backend.Models.Domain;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,7 +16,7 @@ namespace Lagalt_Backend.Models.Dto.User
 
         public ICollection<Project>? ContributedProjects { get; set; } = new List<Project>();
 
-        public ICollection<Message>? Messages { get; set; } = new List<Message>();
+        public ICollection<Domain.Message>? Messages { get; set; } = new List<Domain.Message>();
 
         public ICollection<Application>? Applications { get; set; } = new List<Application>();
 
