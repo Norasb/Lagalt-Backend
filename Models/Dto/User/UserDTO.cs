@@ -20,6 +20,6 @@ namespace Lagalt_Backend.Models.Dto.User
 
         public ICollection<Application>? Applications { get; set; } = new List<Application>();
 
-        public ICollection<Skill>? Skills { get; set; } = new List<Skill>();
+        public ICollection<Domain.Skill>? Skills { get; set; } = new List<Domain.Skill>();
     }
 }
