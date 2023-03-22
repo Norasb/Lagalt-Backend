@@ -11,6 +11,6 @@ namespace Lagalt_Backend.Models.Domain
 
         // Relationships
         public int UserId { get; set; }
-        public User User { get; set; }
+        public User User { get; set; } = null!;
     }
 }

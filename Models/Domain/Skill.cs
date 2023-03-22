@@ -9,6 +9,6 @@ namespace Lagalt_Backend.Models.Domain
         public string Name { get; set; } = null!;
 
         // Relationships
-        public ICollection<User> Users { get; set; }
+        public ICollection<User>? Users { get; set; }
     }
 }

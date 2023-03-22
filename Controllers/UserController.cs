@@ -29,7 +29,7 @@ namespace Lagalt_Backend.Controllers
 
         // GET: api/User
         [HttpGet]
-        public async Task<ActionResult<ICollection<UserDTO>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
         {
             return Ok(_mapper.Map<List<UserDTO>>(await _userService.GetAllAsync()));
         }

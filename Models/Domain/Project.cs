@@ -12,18 +12,20 @@ namespace Lagalt_Backend.Models.Domain
         public string Caption { get; set; } = null!;
         public DateTime DOC { get; set; }
         public string Progress { get; set; } = null!;
-        public string Tags { get; set; } = null!;
+        
 
         // Relationships
         [InverseProperty("OwnedProjects")]
-        public User? Owner { get; set; }
+        public User Owner { get; set; } = null!;
 
         [ForeignKey("User")]
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
 
         [InverseProperty("ContributedProjects")]
         public ICollection<User>? Contributors { get; set; }
         
         public ICollection<Image>? Images { get; set; }
+
+        public ICollection<Tag>? Tags { get; set; } = new List<Tag>();
     }
 }
