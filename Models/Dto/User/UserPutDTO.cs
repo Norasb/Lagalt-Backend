@@ -1,4 +1,4 @@
-﻿namespace Lagalt_Backend.Models.DTOs.Users
+﻿namespace Lagalt_Backend.Models.Dto.User
 {
     public class UserPutDTO
     {
