@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lagalt_Backend.Migrations
 {
     [DbContext(typeof(LagAltDbContext))]
-    [Migration("20230321061139_InitialDb")]
-    partial class InitialDb
+    [Migration("20230323104212_InitialDb2")]
+    partial class InitialDb2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,7 +40,7 @@ namespace Lagalt_Backend.Migrations
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -89,6 +89,9 @@ namespace Lagalt_Backend.Migrations
                     b.Property<DateTime>("DOC")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -97,6 +100,8 @@ namespace Lagalt_Backend.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
 
                     b.HasIndex("UserId");
 
@@ -114,9 +119,6 @@ namespace Lagalt_Backend.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -152,14 +154,7 @@ namespace Lagalt_Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PortfolioId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Progress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Tags")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -167,12 +162,10 @@ namespace Lagalt_Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PortfolioId");
 
                     b.HasIndex("UserId");
 
@@ -196,6 +189,23 @@ namespace Lagalt_Backend.Migrations
                     b.ToTable("Skill");
                 });
 
+            modelBuilder.Entity("Lagalt_Backend.Models.Domain.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
+                });
+
             modelBuilder.Entity("Lagalt_Backend.Models.Domain.User", b =>
                 {
                     b.Property<int>("Id")
@@ -211,6 +221,51 @@ namespace Lagalt_Backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("PortfolioProject", b =>
+                {
+                    b.Property<int>("PortfolioId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProjectsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PortfolioId", "ProjectsId");
+
+                    b.HasIndex("ProjectsId");
+
+                    b.ToTable("PortfolioProject");
+                });
+
+            modelBuilder.Entity("ProjectSkill", b =>
+                {
+                    b.Property<int>("ProjectsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SkillsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProjectsId", "SkillsId");
+
+                    b.HasIndex("SkillsId");
+
+                    b.ToTable("ProjectSkill");
+                });
+
+            modelBuilder.Entity("ProjectTag", b =>
+                {
+                    b.Property<int>("ProjectsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TagsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProjectsId", "TagsId");
+
+                    b.HasIndex("TagsId");
+
+                    b.ToTable("ProjectTag");
                 });
 
             modelBuilder.Entity("ProjectUser", b =>
@@ -246,16 +301,14 @@ namespace Lagalt_Backend.Migrations
             modelBuilder.Entity("Lagalt_Backend.Models.Domain.Application", b =>
                 {
                     b.HasOne("Lagalt_Backend.Models.Domain.Project", "Project")
-                        .WithMany()
+                        .WithMany("Applications")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Lagalt_Backend.Models.Domain.User", "User")
                         .WithMany("Applications")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Project");
 
@@ -275,11 +328,19 @@ namespace Lagalt_Backend.Migrations
 
             modelBuilder.Entity("Lagalt_Backend.Models.Domain.Message", b =>
                 {
+                    b.HasOne("Lagalt_Backend.Models.Domain.Project", "Project")
+                        .WithMany("Messages")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Lagalt_Backend.Models.Domain.User", "User")
                         .WithMany("Messages")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Project");
 
                     b.Navigation("User");
                 });
@@ -297,15 +358,58 @@ namespace Lagalt_Backend.Migrations
 
             modelBuilder.Entity("Lagalt_Backend.Models.Domain.Project", b =>
                 {
-                    b.HasOne("Lagalt_Backend.Models.Domain.Portfolio", null)
-                        .WithMany("Projects")
-                        .HasForeignKey("PortfolioId");
-
                     b.HasOne("Lagalt_Backend.Models.Domain.User", "Owner")
                         .WithMany("OwnedProjects")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("PortfolioProject", b =>
+                {
+                    b.HasOne("Lagalt_Backend.Models.Domain.Portfolio", null)
+                        .WithMany()
+                        .HasForeignKey("PortfolioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Lagalt_Backend.Models.Domain.Project", null)
+                        .WithMany()
+                        .HasForeignKey("ProjectsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProjectSkill", b =>
+                {
+                    b.HasOne("Lagalt_Backend.Models.Domain.Project", null)
+                        .WithMany()
+                        .HasForeignKey("ProjectsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Lagalt_Backend.Models.Domain.Skill", null)
+                        .WithMany()
+                        .HasForeignKey("SkillsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProjectTag", b =>
+                {
+                    b.HasOne("Lagalt_Backend.Models.Domain.Project", null)
+                        .WithMany()
+                        .HasForeignKey("ProjectsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Lagalt_Backend.Models.Domain.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ProjectUser", b =>
@@ -338,14 +442,13 @@ namespace Lagalt_Backend.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Lagalt_Backend.Models.Domain.Portfolio", b =>
-                {
-                    b.Navigation("Projects");
-                });
-
             modelBuilder.Entity("Lagalt_Backend.Models.Domain.Project", b =>
                 {
+                    b.Navigation("Applications");
+
                     b.Navigation("Images");
+
+                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("Lagalt_Backend.Models.Domain.User", b =>
@@ -356,8 +459,7 @@ namespace Lagalt_Backend.Migrations
 
                     b.Navigation("OwnedProjects");
 
-                    b.Navigation("Portfolio")
-                        .IsRequired();
+                    b.Navigation("Portfolio");
                 });
 #pragma warning restore 612, 618
         }

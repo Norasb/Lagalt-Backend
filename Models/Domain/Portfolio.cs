@@ -11,11 +11,11 @@ namespace Lagalt_Backend.Models.Domain
 
         // Relationships
         public int UserId { get; set; }
-        public User User { get; set; }
+        [InverseProperty("Portfolio")]
+        public User User { get; set; } = null!;
 
-        public int? ProjectId { get; set; }
-        public ICollection<Project>? Projects { get; set; }
-
-
+        //Relationships
+        [InverseProperty("Portfolio")]
+        public ICollection<Project>? Projects { get; set; } = new List<Project>();
     }
 }

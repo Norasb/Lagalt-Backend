@@ -1,41 +1,40 @@
 ﻿using AutoMapper;
 using Lagalt_Backend.Models.Domain;
-using Lagalt_Backend.Models.Dto.Skill;
-using Lagalt_Backend.Services.Skills;
+using Lagalt_Backend.Models.Dto.Tag;
+using Lagalt_Backend.Services.Tags;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace Lagalt_Backend.Controllers
 {
-    [Route("api/skills")]
-    [ApiController]
-    public class SkillsController : ControllerBase
+    [Route("api/tags")]
+    public class TagController : ControllerBase
     {
-        private readonly ISkillService _skillService;
+        private readonly ITagService _tagService;
         private readonly IMapper _mapper;
 
-        public SkillsController(ISkillService skillService, IMapper mapper)
+        public TagController(ITagService tagService, IMapper mapper)
         {
-            _skillService = skillService;
+            _tagService = tagService;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SkillDto>>> GetAllSkills()
+        public async Task<ActionResult<IEnumerable<TagDto>>> GetAllTags()
         {
             return Ok(
-                _mapper.Map<List<SkillDto>>(
-                await _skillService.GetAllAsync()));
+                _mapper.Map<List<TagDto>>(
+                await _tagService.GetAllAsync()));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<SkillDto>> GetSkillById(int id)
+        public async Task<ActionResult<TagDto>> GetTagById(int id)
         {
             try
             {
                 return Ok(
-                    _mapper.Map<SkillDto>(
-                    await _skillService.GetByIdAsync(id)));
+                    _mapper.Map<TagDto>(
+                    await _tagService.GetByIdAsync(id)));
 
             } catch (Exception ex)
             {
@@ -49,23 +48,23 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddSkill(SkillPostDto skillDto)
+        public async Task<ActionResult> AddTag(TagPostDto tagDto)
         {
-            Skill skill = _mapper.Map<Skill>(skillDto);
-            await _skillService.AddAsync(skill);
-            return CreatedAtAction("GetSkillById", new { id = skill.Id }, skill);
+            Tag tag = _mapper.Map<Tag>(tagDto);
+            await _tagService.AddAsync(tag);
+            return CreatedAtAction("GetSkillById", new { id = tag.Id }, tag);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateSkill(int id, SkillPutDto skillDto)
+        public async Task<ActionResult> UpdateTags(int id, TagPutDto tagDto)
         {
 
-            Skill existingSkill = _skillService.GetByIdAsync(id).Result;
-            existingSkill.Name = skillDto.Name;
+            Tag existingTag = _tagService.GetByIdAsync(id).Result;
+            existingTag.Name = tagDto.Name;
 
             try
             {
-                await _skillService.UpdateAsync(_mapper.Map<Skill>(existingSkill));
+                await _tagService.UpdateAsync(_mapper.Map<Tag>(existingTag));
                 return NoContent();
             } catch (Exception ex)
             {
@@ -79,11 +78,11 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteSkill(int id)
+        public async Task<ActionResult> DeleteTag(int id)
         {
             try
             {
-                await _skillService.DeleteByIdAsync(id);
+                await _tagService.DeleteByIdAsync(id);
                 return NoContent();
             } catch (Exception ex)
             {
@@ -96,4 +95,6 @@ namespace Lagalt_Backend.Controllers
             }
         }
     }
+
 }
+

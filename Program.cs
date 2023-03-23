@@ -7,6 +7,7 @@ using Lagalt_Backend.Services.UserServices;
 using Microsoft.EntityFrameworkCore;
 using Lagalt_Backend.Services.Skills;
 using Lagalt_Backend.Services.PortfolioServices;
+using Lagalt_Backend.Services.Tags;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,7 @@ builder.Services.AddTransient<IProjectService, ProjectService>();
 builder.Services.AddTransient<IMessageService, MessageService>();
 builder.Services.AddTransient<IImageService, ImageService>();
 builder.Services.AddTransient<ISkillService, SkillService>();
+builder.Services.AddTransient<ITagService, TagService>();
 builder.Services.AddTransient<IPortfolioService, PortfolioService>();
 builder.Services.AddTransient<IApplicationService, ApplicationService>();
 

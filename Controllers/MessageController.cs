@@ -7,7 +7,7 @@ using System.Net;
 
 namespace Lagalt_Backend.Controllers
 {
-    [Route("messages")]
+    [Route("api/messages")]
     [ApiController]
     public class MessageController : ControllerBase
     {
@@ -55,7 +55,6 @@ namespace Lagalt_Backend.Controllers
             {
                 DOC = DateTime.Now,
                 Text = postMessage.Text,
-                UserId = postMessage.UserId,
             };
 
             await _messageService.AddAsync(_mapper.Map<Message>(message));

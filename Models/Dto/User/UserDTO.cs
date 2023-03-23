@@ -11,15 +11,15 @@ namespace Lagalt_Backend.Models.Dto.User
         public string Description { get; set; } = null!;
 
         // Relationships
-        public Portfolio? Portfolio { get; set; }
-        public ICollection<Project>? OwnedProjects { get; set; } = new List<Project>();
+        public int Portfolio { get; set; }
+        public List<int> OwnedProjects { get; set; }
 
-        public ICollection<Project>? ContributedProjects { get; set; } = new List<Project>();
+        public List<int> ContributedProjects { get; set; }
 
-        public ICollection<Domain.Message>? Messages { get; set; } = new List<Domain.Message>();
+        public List<int> Messages { get; set; }
 
-        public ICollection<Application>? Applications { get; set; } = new List<Application>();
+        public List<int> Applications { get; set; }
 
-        public ICollection<Domain.Skill>? Skills { get; set; } = new List<Domain.Skill>();
+        public List<int> Skills { get; set; }
     }
 }

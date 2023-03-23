@@ -14,7 +14,7 @@ using Lagalt_Backend.Models.Dto.Image;
 
 namespace Lagalt_Backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/images")]
     [ApiController]
     public class ImageController : ControllerBase
     {
