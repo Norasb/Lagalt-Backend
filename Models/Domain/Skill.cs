@@ -11,5 +11,7 @@ namespace Lagalt_Backend.Models.Domain
         // Relationships
         [InverseProperty("Skills")]
         public ICollection<User>? Users { get; set; }
+        [InverseProperty("Skills")]
+        public ICollection<Project>? Projects { get; set; }
     }
 }

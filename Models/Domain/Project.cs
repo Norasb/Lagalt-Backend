@@ -29,11 +29,16 @@ namespace Lagalt_Backend.Models.Domain
 
         [InverseProperty("Projects")]
         public ICollection<Tag>? Tags { get; set; } = new List<Tag>();
+        [InverseProperty("Projects")]
+        public ICollection<Skill>? Skills { get; set; } = new List<Skill>();
 
         [InverseProperty("Projects")]
         public ICollection<Portfolio>? Portfolio { get; set; } = new List<Portfolio>();
 
         [InverseProperty("Project")]
         public ICollection<Application>? Applications { get; set; } = new List<Application>();
+
+        [InverseProperty("Project")]
+        public ICollection<Message>? Messages { get; set; } = new List<Message>();
     }
 }

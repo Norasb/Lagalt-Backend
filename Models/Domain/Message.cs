@@ -13,5 +13,9 @@ namespace Lagalt_Backend.Models.Domain
         public int UserId { get; set; }
         [InverseProperty("Messages")]
         public User User { get; set; } = null!;
+
+        public int ProjectId { get; set; }
+        [InverseProperty("Messages")]
+        public Project Project { get; set; } = null!;
     }
 }

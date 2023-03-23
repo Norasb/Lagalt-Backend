@@ -202,13 +202,13 @@ namespace Lagalt_Backend.Migrations
                         column: x => x.PortfolioId,
                         principalTable: "Portfolio",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_PortfolioProject_Project_ProjectsId",
                         column: x => x.ProjectsId,
                         principalTable: "Project",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -250,13 +250,13 @@ namespace Lagalt_Backend.Migrations
                         column: x => x.ContributedProjectsId,
                         principalTable: "Project",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_ProjectUser_User_ContributorsId",
                         column: x => x.ContributorsId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(

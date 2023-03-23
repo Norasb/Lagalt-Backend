@@ -11,6 +11,6 @@ namespace Lagalt_Backend.Models.Dto.Portfolio
         public int UserId { get; set; }
 
         public int? ProjectId { get; set; }
-        public ICollection<Project>? Projects { get; set; }
+        public List<int> Projects { get; set; } = new List<int>();
     }
 }

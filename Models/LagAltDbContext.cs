@@ -19,7 +19,7 @@ namespace Lagalt_Backend.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-        
+          
         }
     }
 }

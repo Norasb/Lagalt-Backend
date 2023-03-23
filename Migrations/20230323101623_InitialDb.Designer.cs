@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lagalt_Backend.Migrations
 {
     [DbContext(typeof(LagAltDbContext))]
-    [Migration("20230322144512_InitialDb")]
+    [Migration("20230323101623_InitialDb")]
     partial class InitialDb
     {
         /// <inheritdoc />
