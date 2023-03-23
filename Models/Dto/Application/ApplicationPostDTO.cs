@@ -6,6 +6,7 @@ namespace Lagalt_Backend.Models.Dto.Application
     {
         public int Id { get; set; }
         public string Motivation { get; set; } = null!;
+        public bool ApprovedStatus { get; set; }
 
         //// Relationships
         public int UserId { get; set; }
