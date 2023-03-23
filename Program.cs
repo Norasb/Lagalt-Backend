@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Lagalt_Backend.Services.Skills;
 using Lagalt_Backend.Services.PortfolioServices;
 using Lagalt_Backend.Services.Tags;
+using Lagalt_Backend.Services.Links;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,7 @@ builder.Services.AddTransient<ISkillService, SkillService>();
 builder.Services.AddTransient<ITagService, TagService>();
 builder.Services.AddTransient<IPortfolioService, PortfolioService>();
 builder.Services.AddTransient<IApplicationService, ApplicationService>();
+builder.Services.AddTransient<ILinkService, LinkService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
