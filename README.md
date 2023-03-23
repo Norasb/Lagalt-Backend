@@ -7,7 +7,7 @@ The project consists of creating the website lagalt.no, a platform that aims to 
 The website uses Oauth for handling authentication, and the website's backend exposes REST API endpoints and utilizes SQLServer for the database. 
 
 ## Development
-The development is done using .NET 6.0 Model Controller View framework for creating APIs. More information about the .NET MVC framework can be found from the following link: [(https://learn.microsoft.com/en-us/aspnet/core/mvc/overview?view=aspnetcore-6.0)].
+The development is done using .NET 6.0 Model Controller View framework for creating APIs. More information about the .NET MVC framework can be found from the following link: https://learn.microsoft.com/en-us/aspnet/core/mvc/overview?view=aspnetcore-6.0.
 
 ## Authors
 The authors of the project are:
