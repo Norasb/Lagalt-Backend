@@ -40,5 +40,7 @@ namespace Lagalt_Backend.Models.Domain
 
         [InverseProperty("Project")]
         public ICollection<Message>? Messages { get; set; } = new List<Message>();
+        [InverseProperty("Project")]
+        public ICollection<Link> Links { get; set; } = new List<Link>();
     }
 }

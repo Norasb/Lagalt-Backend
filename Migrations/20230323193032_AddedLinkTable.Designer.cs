@@ -4,6 +4,7 @@ using Lagalt_Backend.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lagalt_Backend.Migrations
 {
     [DbContext(typeof(LagAltDbContext))]
-    partial class LagAltDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230323193032_AddedLinkTable")]
+    partial class AddedLinkTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,16 +86,11 @@ namespace Lagalt_Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
                     b.Property<string>("URL")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
 
                     b.ToTable("Links");
                 });
@@ -345,17 +343,6 @@ namespace Lagalt_Backend.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("Lagalt_Backend.Models.Domain.Link", b =>
-                {
-                    b.HasOne("Lagalt_Backend.Models.Domain.Project", "Project")
-                        .WithMany("Links")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-                });
-
             modelBuilder.Entity("Lagalt_Backend.Models.Domain.Message", b =>
                 {
                     b.HasOne("Lagalt_Backend.Models.Domain.Project", "Project")
@@ -477,8 +464,6 @@ namespace Lagalt_Backend.Migrations
                     b.Navigation("Applications");
 
                     b.Navigation("Images");
-
-                    b.Navigation("Links");
 
                     b.Navigation("Messages");
                 });
