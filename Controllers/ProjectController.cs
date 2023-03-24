@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using Lagalt_Backend.Models.Domain;
 using Lagalt_Backend.Models.Dto.Projects;
+using Lagalt_Backend.Models.Dto.User;
 using Lagalt_Backend.Services.Projects;
+using Lagalt_Backend.Services.Skills;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace Lagalt_Backend.Controllers
@@ -13,11 +16,13 @@ namespace Lagalt_Backend.Controllers
     {
         private readonly IProjectService _projectService;
         private readonly IMapper _mapper;
+        private readonly ISkillService _skillService;
 
-        public ProjectController(IProjectService projectService, IMapper mapper)
+        public ProjectController(IProjectService projectService, IMapper mapper, ISkillService skillService)
         {
             _projectService = projectService;
             _mapper = mapper;
+            _skillService = skillService;
         }
 
         [HttpGet]
@@ -49,9 +54,11 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddProject(ProjectPostDto projectPostDto)
+        public async Task<ActionResult> AddProject(ProjectPostDto projectDto)
         {
-            Project project = _mapper.Map<Project>(projectPostDto);
+            //var skills = await _skillService.GetSkillsByIdAsync(projectDto.Skills);
+            Project project = _mapper.Map<Project>(projectDto);
+            //project.Skills = skills;
             await _projectService.AddAsync(project);
             return CreatedAtAction("GetProjectById", new { id = project.Id }, project);
         }

@@ -9,6 +9,7 @@ namespace Lagalt_Backend.Profiles
         public ProjectProfile()
         {
             CreateMap<ProjectPostDto, Project>();
+                //.ForMember(dest => dest.Skills, opt => opt.Ignore());
             CreateMap<ProjectPutDto, Project>();
             CreateMap<Project, ProjectDto>()
                 .ForMember(dto => dto.Owner, opt => opt
