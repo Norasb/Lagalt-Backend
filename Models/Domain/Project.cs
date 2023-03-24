@@ -19,7 +19,7 @@ namespace Lagalt_Backend.Models.Domain
         public User Owner { get; set; } = null!;
 
         [ForeignKey("User")]
-        public int UserId { get; set; }
+        public string UserId { get; set; } = null!;
 
         [InverseProperty("ContributedProjects")]
         public ICollection<User>? Contributors { get; set; } = new List<User>();
