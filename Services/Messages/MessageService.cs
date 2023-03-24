@@ -26,7 +26,7 @@ namespace Lagalt_Backend.Services.Messages
 
             if (message == null)
             {
-                throw new EntryPointNotFoundException();
+                throw new Exception("Message not found");
             }
 
             _context.Messages.Remove(message);

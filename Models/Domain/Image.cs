@@ -11,6 +11,8 @@ namespace Lagalt_Backend.Models.Domain
 
         // Relationships
         public int ProjectId { get; set; }
+
+        [InverseProperty("Images")]
         public Project Project { get; set; } = null!;
     }
 }
