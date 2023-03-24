@@ -22,7 +22,6 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<IEnumerable<ProjectDto>>> GetAllProjects()
         {
             return Ok(
