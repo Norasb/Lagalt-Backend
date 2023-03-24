@@ -51,5 +51,12 @@ namespace Lagalt_Backend.Services.Projects
             _context.Entry(obj).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
+
+        public async Task<ICollection<Project>> GetProjectsBySkill(string skill)
+        {
+            return await _context.Projects
+                .Where(p => p.Skills.Any(s => s.Name == skill))
+                .ToListAsync();
+        }
     }
 }
