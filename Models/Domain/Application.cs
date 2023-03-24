@@ -10,7 +10,7 @@ namespace Lagalt_Backend.Models.Domain
         public bool ApprovalStatus { get; set; }
 
         // Relationships
-        public int? UserId { get; set; }
+        public string? UserId { get; set; }
         [InverseProperty("Applications")]
         public User? User { get; set; } = null!;
 

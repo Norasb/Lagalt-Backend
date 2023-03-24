@@ -2,6 +2,7 @@
 using Lagalt_Backend.Models.Domain;
 using Lagalt_Backend.Models.Dto.Tag;
 using Lagalt_Backend.Services.Tags;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -48,6 +49,7 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> AddTag(TagPostDto tagDto)
         {
             Tag tag = _mapper.Map<Tag>(tagDto);
@@ -56,6 +58,7 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult> UpdateTags(int id, TagPutDto tagDto)
         {
 
@@ -78,6 +81,7 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult> DeleteTag(int id)
         {
             try
