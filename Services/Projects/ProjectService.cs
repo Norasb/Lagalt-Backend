@@ -43,6 +43,12 @@ namespace Lagalt_Backend.Services.Projects
         {
             return await _context.Projects
                 .Where(p => p.Id == id)
+                .Include(p => p.Owner)
+                .Include(p => p.Contributors)
+                .Include(p => p.Images)
+                .Include(p => p.Tags)
+                .Include(p => p.Skills)
+                .Include(p => p.Links)
                 .FirstAsync();
         }
 
