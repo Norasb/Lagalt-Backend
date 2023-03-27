@@ -67,7 +67,7 @@ namespace Lagalt_Backend.Services.UserServices
                 throw new Exception("User not found.");
             }
 
-            // Combine both collections and return the result.
+            // Combine both collections and returns the result.
             var projects = user.OwnedProjects.Concat(user.ContributedProjects).ToList();
             return projects;
         }
