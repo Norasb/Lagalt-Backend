@@ -2,6 +2,7 @@
 using Lagalt_Backend.Models.Domain;
 using Lagalt_Backend.Models.Dto.Projects;
 using Lagalt_Backend.Services.Projects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -29,12 +30,12 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProjectDto>> GetProjectById(int id)
+        public async Task<ActionResult<ProjectOneDto>> GetProjectById(int id)
         {
             try
             {
                 return Ok(
-                    _mapper.Map<ProjectDto>(
+                    _mapper.Map<ProjectOneDto>(
                     await _projectService.GetByIdAsync(id)));
 
             } catch (Exception ex)
@@ -67,6 +68,7 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> AddProject(ProjectPostDto projectPostDto)
         {
             Project project = _mapper.Map<Project>(projectPostDto);
@@ -75,6 +77,7 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult> UpdateProject(int id, ProjectPutDto project)
         {
             try
@@ -93,6 +96,7 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult> DeleteProject(int id)
         {
             try

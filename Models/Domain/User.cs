@@ -5,7 +5,7 @@ namespace Lagalt_Backend.Models.Domain
     [Table("User")]
     public class User
     {
-        public int Id { get; set; }
+        public string Id { get; set; } = null!;
         public string Description { get; set; } = null!;
 
         // Relationships

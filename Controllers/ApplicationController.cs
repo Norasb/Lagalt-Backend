@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Lagalt_Backend.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using Lagalt_Backend.Models.Domain;
 using Lagalt_Backend.Services.ApplicationServices;
 using System.Net;
 using AutoMapper;
 using Lagalt_Backend.Models.Dto.Application;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Lagalt_Backend.Controllers
 {
@@ -29,6 +23,7 @@ namespace Lagalt_Backend.Controllers
 
         // GET: api/Application
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<ApplicationDTO>>> GetApplications()
         {
             return Ok(
@@ -38,6 +33,7 @@ namespace Lagalt_Backend.Controllers
 
         // GET: api/Application/5
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<ApplicationDTO>> GetApplication(int id)
         {
             try
@@ -56,6 +52,7 @@ namespace Lagalt_Backend.Controllers
 
         // PUT: api/Application/5
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutApplication(int id, ApplicationPutDTO applicationDto)
         {
             if (id != applicationDto.Id)
@@ -81,6 +78,7 @@ namespace Lagalt_Backend.Controllers
 
         // POST: api/Application
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<ApplicationPostDTO>> PostApplication(ApplicationPostDTO applicationDto)
         {
             Application application = _mapper.Map<Application>(applicationDto);
@@ -90,6 +88,7 @@ namespace Lagalt_Backend.Controllers
 
         // DELETE: api/Application/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteApplication(int id)
         {
             try
