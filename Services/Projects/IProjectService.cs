@@ -7,6 +7,5 @@ namespace Lagalt_Backend.Services.Projects
 {
     public interface IProjectService : ICrudService<Project, int>
     {
-        Task<Project> GetByUserIdAsync(int id);
     }
 }

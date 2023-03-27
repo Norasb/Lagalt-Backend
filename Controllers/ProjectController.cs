@@ -50,22 +50,7 @@ namespace Lagalt_Backend.Controllers
         }
 
   
-        [HttpGet("{userId}/projects")]
-        public async Task<ActionResult<ProjectDto>> GetProjectByUserId(int userId)
-        {
-            try
-            {
-                return Ok(_mapper.Map<ProjectDto>(await _projectService.GetByUserIdAsync(userId)));
-            }
-            catch (Exception ex)
-            {
-                return NotFound(new ProblemDetails()
-                {
-                    Detail = ex.Message,
-                    Status = ((int)HttpStatusCode.NotFound)
-                });
-            }
-        }
+
 
         [HttpPost]
         [Authorize]
