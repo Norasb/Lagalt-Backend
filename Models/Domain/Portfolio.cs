@@ -10,7 +10,7 @@ namespace Lagalt_Backend.Models.Domain
         public string Description { get; set; } = null!;
 
         // Relationships
-        public int UserId { get; set; }
+        public string UserId { get; set; } = null!;
         [InverseProperty("Portfolio")]
         public User User { get; set; } = null!;
 

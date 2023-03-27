@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Lagalt_Backend.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using Lagalt_Backend.Models.Domain;
 using Lagalt_Backend.Services.ImageServices;
 using System.Net;
 using AutoMapper;
 using Lagalt_Backend.Models.Dto.Image;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Lagalt_Backend.Controllers
 {
@@ -59,6 +53,7 @@ namespace Lagalt_Backend.Controllers
         // PUT: api/Image/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult> PutImage(int id, ImagePutDTO imageDto)
         {
             if (id != imageDto.Id)
@@ -84,6 +79,7 @@ namespace Lagalt_Backend.Controllers
         // POST: api/Image
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<ImagePostDTO>> PostImage(ImagePostDTO imageDto)
         {
             Image image = _mapper.Map<Image>(imageDto);
@@ -93,6 +89,7 @@ namespace Lagalt_Backend.Controllers
 
         // DELETE: api/Image/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteImage(int id)
         {
             try

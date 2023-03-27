@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Lagalt_Backend.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using Lagalt_Backend.Models.Domain;
 using Lagalt_Backend.Services.PortfolioServices;
 using System.Net;
 using AutoMapper;
 using Lagalt_Backend.Models.Dto.Portfolio;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Lagalt_Backend.Controllers
 {
@@ -31,6 +25,7 @@ namespace Lagalt_Backend.Controllers
         
         // GET: api/Portfolios
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<PortfolioDTO>>> GetPortfolios()
         {
             return Ok(_mapper.Map<List<PortfolioDTO>>(await _portfolioService.GetAllAsync()));
@@ -46,6 +41,7 @@ namespace Lagalt_Backend.Controllers
         
         // GET: api/Portfolios/5
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<PortfolioDTO>> GetPortfolio(int id)
         {
             try
@@ -66,6 +62,7 @@ namespace Lagalt_Backend.Controllers
         // PUT: api/Portfolios/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutPortfolio(int id, PortfolioPutDTO portfolioDto)
         {
             if (id != portfolioDto.Id)
@@ -95,6 +92,7 @@ namespace Lagalt_Backend.Controllers
 
         // DELETE: api/Portfolios/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeletePortfolio(int id)
         {
             try

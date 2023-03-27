@@ -2,6 +2,7 @@
 using Lagalt_Backend.Models.Domain;
 using Lagalt_Backend.Models.Dto.Skill;
 using Lagalt_Backend.Services.Skills;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -49,6 +50,7 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> AddSkill(SkillPostDto skillDto)
         {
             Skill skill = _mapper.Map<Skill>(skillDto);
@@ -57,6 +59,7 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult> UpdateSkill(int id, SkillPutDto skillDto)
         {
 
@@ -79,6 +82,7 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult> DeleteSkill(int id)
         {
             try

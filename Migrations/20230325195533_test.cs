@@ -41,8 +41,7 @@ namespace Lagalt_Backend.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -57,7 +56,7 @@ namespace Lagalt_Backend.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -82,7 +81,7 @@ namespace Lagalt_Backend.Migrations
                     Caption = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DOC = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Progress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -100,7 +99,7 @@ namespace Lagalt_Backend.Migrations
                 columns: table => new
                 {
                     SkillsId = table.Column<int>(type: "int", nullable: false),
-                    UsersId = table.Column<int>(type: "int", nullable: false)
+                    UsersId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -110,13 +109,21 @@ namespace Lagalt_Backend.Migrations
                         column: x => x.SkillsId,
                         principalTable: "Skill",
                         principalColumn: "Id",
+<<<<<<<< HEAD:Migrations/20230325195533_test.cs
                         onDelete: ReferentialAction.Restrict);
+========
+                        onDelete: ReferentialAction.NoAction);
+>>>>>>>> development:Migrations/20230324142036_InitialDb.cs
                     table.ForeignKey(
                         name: "FK_SkillUser_User_UsersId",
                         column: x => x.UsersId,
                         principalTable: "User",
                         principalColumn: "Id",
+<<<<<<<< HEAD:Migrations/20230325195533_test.cs
                         onDelete: ReferentialAction.Restrict);
+========
+                        onDelete: ReferentialAction.NoAction);
+>>>>>>>> development:Migrations/20230324142036_InitialDb.cs
                 });
 
             migrationBuilder.CreateTable(
@@ -127,7 +134,11 @@ namespace Lagalt_Backend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Motivation = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ApprovalStatus = table.Column<bool>(type: "bit", nullable: false),
+<<<<<<<< HEAD:Migrations/20230325195533_test.cs
                     UserId = table.Column<int>(type: "int", nullable: true),
+========
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+>>>>>>>> development:Migrations/20230324142036_InitialDb.cs
                     ProjectId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -217,6 +228,54 @@ namespace Lagalt_Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Links",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    URL = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProjectId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Links", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Links_Project_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Project",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Message",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DOC = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProjectId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Message", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Message_Project_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Project",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Message_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PortfolioProject",
                 columns: table => new
                 {
@@ -265,6 +324,30 @@ namespace Lagalt_Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProjectSkill",
+                columns: table => new
+                {
+                    ProjectsId = table.Column<int>(type: "int", nullable: false),
+                    SkillsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProjectSkill", x => new { x.ProjectsId, x.SkillsId });
+                    table.ForeignKey(
+                        name: "FK_ProjectSkill_Project_ProjectsId",
+                        column: x => x.ProjectsId,
+                        principalTable: "Project",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_ProjectSkill_Skill_SkillsId",
+                        column: x => x.SkillsId,
+                        principalTable: "Skill",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProjectTag",
                 columns: table => new
                 {
@@ -279,13 +362,21 @@ namespace Lagalt_Backend.Migrations
                         column: x => x.ProjectsId,
                         principalTable: "Project",
                         principalColumn: "Id",
+<<<<<<<< HEAD:Migrations/20230325195533_test.cs
                         onDelete: ReferentialAction.Restrict);
+========
+                        onDelete: ReferentialAction.NoAction);
+>>>>>>>> development:Migrations/20230324142036_InitialDb.cs
                     table.ForeignKey(
                         name: "FK_ProjectTag_Tags_TagsId",
                         column: x => x.TagsId,
                         principalTable: "Tags",
                         principalColumn: "Id",
+<<<<<<<< HEAD:Migrations/20230325195533_test.cs
                         onDelete: ReferentialAction.Restrict);
+========
+                        onDelete: ReferentialAction.NoAction);
+>>>>>>>> development:Migrations/20230324142036_InitialDb.cs
                 });
 
             migrationBuilder.CreateTable(
@@ -293,7 +384,7 @@ namespace Lagalt_Backend.Migrations
                 columns: table => new
                 {
                     ContributedProjectsId = table.Column<int>(type: "int", nullable: false),
-                    ContributorsId = table.Column<int>(type: "int", nullable: false)
+                    ContributorsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {

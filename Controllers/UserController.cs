@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Lagalt_Backend.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using Lagalt_Backend.Models.Domain;
 using Lagalt_Backend.Services.UserServices;
 using System.Net;
 using AutoMapper;
 using Lagalt_Backend.Models.Dto.User;
+using Microsoft.AspNetCore.Authorization;
+using Lagalt_Backend.Models.Dto.Application;
 
 namespace Lagalt_Backend.Controllers
 {
@@ -29,6 +24,7 @@ namespace Lagalt_Backend.Controllers
 
         // GET: api/User
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
         {
             return Ok(_mapper.Map<List<UserDTO>>(await _userService.GetAllAsync()));
@@ -36,7 +32,8 @@ namespace Lagalt_Backend.Controllers
 
         // GET: api/User/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserDTO>> GetUser(int id)
+        [Authorize]
+        public async Task<ActionResult<UserDTO>> GetUser(string id)
         {
             try
             {
@@ -53,10 +50,31 @@ namespace Lagalt_Backend.Controllers
             }
         }
 
+        [HttpGet("{id}/applications")]
+        public async Task<ActionResult<IEnumerable<ApplicationsInUserDto>>> GetUsersApplications(string id)
+        {
+            try
+            {
+                return Ok(
+                    _mapper.Map<List<ApplicationsInUserDto>>(
+                        await _userService.GetApplicationsInUser(id)));
+            } catch (Exception ex)
+            {
+                return NotFound(
+                    new ProblemDetails()
+                    {
+                        Detail = ex.Message,
+                        Status = (int)HttpStatusCode.NotFound
+                    });
+            }
+        }
+
+
         // PUT: api/User/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, UserPutDTO userDto)
+        [Authorize]
+        public async Task<IActionResult> PutUser(string id, UserPutDTO userDto)
         {
             if (id != userDto.Id)
             {
@@ -81,6 +99,7 @@ namespace Lagalt_Backend.Controllers
         // POST: api/User
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<UserPostDTO>> PostUser(UserPostDTO userDto)
         {
             User user = _mapper.Map<User>(userDto);
@@ -90,7 +109,8 @@ namespace Lagalt_Backend.Controllers
 
         // DELETE: api/User/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        [Authorize]
+        public async Task<IActionResult> DeleteUser(string id)
         {
             try
             {

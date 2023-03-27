@@ -2,6 +2,7 @@
 using Lagalt_Backend.Models.Domain;
 using Lagalt_Backend.Models.Dto.Link;
 using Lagalt_Backend.Services.Links;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -19,6 +20,7 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<LinkDto>>> GetAllLinks()
         {
             return Ok(
@@ -27,6 +29,7 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<LinkDto>> GetLinkById(int id)
         {
             try
@@ -47,6 +50,7 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> AddLink(LinkPostDto linkDto)
         {
             Link link = _mapper.Map<Link>(linkDto);
@@ -55,6 +59,7 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult> UpdateLink(int id, LinkPutDto linkDto)
         {
 
@@ -77,6 +82,7 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult> DeleteLink(int id)
         {
             try

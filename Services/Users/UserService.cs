@@ -20,7 +20,7 @@ namespace Lagalt_Backend.Services.UserServices
             return await _context.Users.ToListAsync();
         }
 
-        public async Task<User> GetByIdAsync(int id)
+        public async Task<User> GetByIdAsync(string id)
         {
             if (!await UserExists(id))
             {
@@ -30,13 +30,28 @@ namespace Lagalt_Backend.Services.UserServices
             return await _context.Users.FindAsync(id);
         }
 
+        public async Task<ICollection<Application>> GetApplicationsInUser(string userId)
+        {
+            if (!await UserExists(userId))
+            {
+                throw new Exception("User does not exist");
+            }
+
+            return await _context.Users
+                .Where(u => u.Id == userId)
+                .Include(u => u.Applications)
+                .Select(u => u.Applications)
+                .FirstAsync();
+
+        }
+
         public async Task AddAsync(User obj)
         {
             await _context.Users.AddAsync(obj);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteByIdAsync(int id)
+        public async Task DeleteByIdAsync(string id)
         {
             var user = await _context.Users.FindAsync(id);
 
@@ -60,7 +75,7 @@ namespace Lagalt_Backend.Services.UserServices
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> UserExists(int id)
+        public async Task<bool> UserExists(string id)
         {
             return await _context.Users.AnyAsync(u => u.Id == id);
         }
