@@ -17,7 +17,9 @@ namespace Lagalt_Backend.Services.UserServices
 
         public async Task<ICollection<User>> GetAllAsync()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users
+                .Include(u => u.Skills)
+                .ToListAsync();
         }
 
         public async Task<User> GetByIdAsync(string id)
