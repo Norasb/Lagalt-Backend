@@ -1,8 +1,6 @@
 ﻿using Lagalt_Backend.Models;
 using Lagalt_Backend.Models.Domain;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Net;
 
 namespace Lagalt_Backend.Services.UserServices
 {
@@ -74,6 +72,31 @@ namespace Lagalt_Backend.Services.UserServices
             // Combine both collections and returns the result.
             var projects = user.OwnedProjects.Concat(user.ContributedProjects).ToList();
             return projects;
+        }
+
+        public async Task<Portfolio> GetPortfolioInUser(string userId)
+        {
+            if (!await UserExists(userId))
+            {
+                throw new Exception("User does not exist");
+            }
+
+            return await _context.Users
+                .Where(u => u.Id == userId)
+                .Include(u => u.Portfolio)
+                    .ThenInclude(p => p.Projects)
+                        .ThenInclude(pr => pr.Tags)
+                .Include(u => u.Portfolio)
+                    .ThenInclude(p => p.Projects)
+                        .ThenInclude(pr => pr.Skills)
+                .Include(u => u.Portfolio)
+                    .ThenInclude(p => p.Projects)
+                        .ThenInclude(pr => pr.Owner)
+                .Include(u => u.Portfolio)
+                    .ThenInclude(p => p.Projects)
+                        .ThenInclude(pr => pr.Images)
+                .Select(u => u.Portfolio)
+                .FirstOrDefaultAsync();
         }
 
 

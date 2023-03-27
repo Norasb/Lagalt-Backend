@@ -7,6 +7,7 @@ using Lagalt_Backend.Models.Dto.User;
 using Microsoft.AspNetCore.Authorization;
 using Lagalt_Backend.Models.Dto.Application;
 using Lagalt_Backend.Models.Dto.Projects;
+using Lagalt_Backend.Models.Dto.Portfolio;
 
 namespace Lagalt_Backend.Controllers
 {
@@ -78,6 +79,22 @@ namespace Lagalt_Backend.Controllers
                 
             }
             catch (Exception ex)
+            {
+                return NotFound(new ProblemDetails()
+                {
+                    Detail = ex.Message,
+                    Status = ((int)HttpStatusCode.NotFound)
+                });
+            }
+        }
+
+        [HttpGet("{id}/portfolio")]
+        public async Task<ActionResult<PortfolioDTO>> GetPortfolioByUserId(string id)
+        {
+            try
+            {
+                return Ok(_mapper.Map<PortfolioDTO>(await _userService.GetPortfolioInUser(id)));
+            } catch(Exception ex)
             {
                 return NotFound(new ProblemDetails()
                 {
