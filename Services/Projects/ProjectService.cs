@@ -56,6 +56,14 @@ namespace Lagalt_Backend.Services.Projects
 
         public async Task UpdateAsync(Project obj)
         {
+
+            List<Tag?> tags = obj.Tags
+                .Select(tid => _context.Tags
+                .SingleOrDefault(t => t.Id == tid.Id))
+                .ToList();
+            obj.Tags = tags;
+
+
             _context.Entry(obj).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }

@@ -9,7 +9,32 @@ namespace Lagalt_Backend.Profiles
         public ProjectProfile()
         {
             CreateMap<ProjectPostDto, Project>();
-            CreateMap<ProjectPutDto, Project>();
+
+            CreateMap<ProjectPutDto, Project>()
+                .ForMember(p => p.Tags, opt => opt
+                .MapFrom(dto => dto.Tags.Select(tag => new Tag { Name = tag })));
+                //.ForMember(p => p.Skills, opt => opt
+                //.MapFrom(dto => dto.Skills.Select(skill => new Skill { Name = skill })))
+                //.ForMember(p => p.Images, opt => opt
+                //.MapFrom(dto => dto.ImageUrls.Select(url => new Image { Url = url })))
+                //.ForMember(p => p.Links, opt => opt
+                //.MapFrom(dto => dto.Links.Select(url => new Link { URL = url })))
+                //.ForMember(p => p.Contributors, opt => opt
+                //.MapFrom(dto => dto.UsersContributed.Select(username => new User { UserName = username })));
+
+            //CreateMap<ProjectPutDto, Project>()
+            //    .ForMember(p => p.Tags, opt => opt
+            //    .MapFrom(dto => dto.Tags))
+            //    .ForMember(p => p.Skills, opt => opt
+            //    .MapFrom(dto => dto.Skills))
+            //    .ForMember(p => p.Images, opt => opt
+            //    .MapFrom(dto => dto.ImageUrls))
+            //    .ForMember(p => p.Links, opt => opt
+            //    .MapFrom(dto => dto.Links))
+            //    .ForMember(p => p.Contributors, opt => opt
+            //    .MapFrom(dto => dto.UsersContributed));
+
+
             CreateMap<Project, ProjectDto>()
                 .ForMember(dto => dto.Owner, opt => opt
                 .MapFrom(p => p.Owner.Id))
