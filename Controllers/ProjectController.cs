@@ -49,6 +49,9 @@ namespace Lagalt_Backend.Controllers
             }
         }
 
+  
+
+
         [HttpPost]
         [Authorize]
         public async Task<ActionResult> AddProject(ProjectPostDto projectPostDto)
@@ -95,6 +98,14 @@ namespace Lagalt_Backend.Controllers
                         Status = ((int)HttpStatusCode.NoContent)
                     });
             }
+        }
+
+        [HttpGet("skill")]
+        public async Task<IActionResult> GetProjectsBySkill(string id)
+        {
+            return Ok(
+                _mapper.Map<List<ProjectDto>>(
+                await _projectService.GetProjectsBySkill(id)));
         }
 
     }

@@ -6,6 +6,7 @@ using AutoMapper;
 using Lagalt_Backend.Models.Dto.User;
 using Microsoft.AspNetCore.Authorization;
 using Lagalt_Backend.Models.Dto.Application;
+using Lagalt_Backend.Models.Dto.Projects;
 
 namespace Lagalt_Backend.Controllers
 {
@@ -24,7 +25,6 @@ namespace Lagalt_Backend.Controllers
 
         // GET: api/User
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
         {
             return Ok(_mapper.Map<List<UserDTO>>(await _userService.GetAllAsync()));
@@ -66,6 +66,24 @@ namespace Lagalt_Backend.Controllers
                         Detail = ex.Message,
                         Status = (int)HttpStatusCode.NotFound
                     });
+            }
+        }
+
+        [HttpGet("{id}/projects")]
+        public async Task<ActionResult<IEnumerable<ProjectDto>>> GetProjectByUserId(string id)
+        {
+            try
+            {
+                return Ok(_mapper.Map<List<ProjectDto>>(await _userService.GetProjectsInUser(id)));
+                
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new ProblemDetails()
+                {
+                    Detail = ex.Message,
+                    Status = ((int)HttpStatusCode.NotFound)
+                });
             }
         }
 

@@ -17,7 +17,9 @@ namespace Lagalt_Backend.Services.UserServices
 
         public async Task<ICollection<User>> GetAllAsync()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users
+                .Include(u => u.Skills)
+                .ToListAsync();
         }
 
         public async Task<User> GetByIdAsync(string id)
@@ -27,7 +29,9 @@ namespace Lagalt_Backend.Services.UserServices
                 throw new Exception("User not found");
             }
 
-            return await _context.Users.FindAsync(id);
+            return await _context.Users
+                .Include(u => u.Skills)
+                .FirstAsync();
         }
 
         public async Task<ICollection<Application>> GetApplicationsInUser(string userId)
@@ -44,6 +48,34 @@ namespace Lagalt_Backend.Services.UserServices
                 .FirstAsync();
 
         }
+        public async Task<ICollection<Project>> GetProjectsInUser(string userId)
+        {
+            if (!await UserExists(userId))
+            {
+                throw new Exception("User does not exist");
+            }
+
+            var user = await _context.Users
+                .Where(u => u.Id == userId)
+                .Include(u => u.OwnedProjects)
+                .Include(u => u.ContributedProjects)
+                .Select(u => new
+                {
+                    u.OwnedProjects,
+                    u.ContributedProjects
+                })
+                .FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                throw new Exception("User not found.");
+            }
+
+            // Combine both collections and return the result.
+            var projects = user.OwnedProjects.Concat(user.ContributedProjects).ToList();
+            return projects;
+        }
+
 
         public async Task AddAsync(User obj)
         {
