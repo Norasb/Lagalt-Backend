@@ -9,7 +9,7 @@
         public string Caption { get; set; } = null!;
         public string Progress { get; set; } = null!;
         public string Tags { get; set; } = null!;
-        public int Owner { get; set; }
+        public string Owner { get; set; }
         public List<int> Contributors { get; set; } = new List<int>();
         public List<int> Images { get; set; } = new List<int>();
     }

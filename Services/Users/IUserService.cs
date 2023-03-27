@@ -6,5 +6,8 @@ namespace Lagalt_Backend.Services.UserServices
     {
         public Task<bool> UserExists(string id);
         Task<ICollection<Application>> GetApplicationsInUser(string userId);
+
+        Task<ICollection<Project>> GetProjectsInUser(string userId);
+
     }
 }
