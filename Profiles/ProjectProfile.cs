@@ -17,7 +17,7 @@ namespace Lagalt_Backend.Profiles
                 .ForMember(dto => dto.Contributors, opt => opt
                 .MapFrom(p => p.Contributors.Select(c => c.Id).ToList()))
                 .ForMember(dto => dto.Images, opt => opt
-                .MapFrom(p => p.Images.Select(c => c.Url).ToList()));
+                .MapFrom(p => p.Images.Select(c => c.Url).ToList()))
                 .ForMember(dto => dto.Tags, opt => opt
                 .MapFrom(p => p.Tags.Select(t => t.Id).ToList()))
                 .ForMember(dto => dto.Skills, opt => opt

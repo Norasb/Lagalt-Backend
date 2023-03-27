@@ -14,17 +14,6 @@ namespace Lagalt_Backend.Services.Projects
         {
             _context = context;
         }
-
-        public async Task AddProjectWithSkills(Project obj)
-        {
-            List<Skill> skills = obj.Skills.ToList()
-                .Select(skill => _context.Skills
-                .Where(m => m.Id == skill.Id).First())
-                .ToList();
-            obj.Skills = skills;
-            await _context.AddAsync(obj);
-            await _context.SaveChangesAsync();
-        }
         public async Task AddAsync(Project obj)
         {
             List<Skill> skills = obj.Skills.ToList()
@@ -33,13 +22,6 @@ namespace Lagalt_Backend.Services.Projects
                 .ToList();
 
             obj.Skills = skills;
-
-            //List<Tag> tags = obj.Tags.ToList()
-            //    .Select(tag => _context.Tags
-            //    .Where(t => t.Id == tag.Id).First())
-            //    .ToList();
-
-            //obj.Tags = tags;
 
             await _context.AddAsync(obj);
             await _context.SaveChangesAsync();

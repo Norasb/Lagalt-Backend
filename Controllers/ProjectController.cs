@@ -3,6 +3,7 @@ using Lagalt_Backend.Models.Domain;
 using Lagalt_Backend.Models.Dto.Projects;
 using Lagalt_Backend.Models.Dto.User;
 using Lagalt_Backend.Services.Projects;
+using Lagalt_Backend.Services.Skills;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -54,10 +55,9 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpPost]
-        [Authorize]
-        public async Task<ActionResult> AddProject(ProjectPostDto projectPostDto)
         public async Task<ActionResult> AddProject(ProjectPostDto projectDto)
         {
+            //var skills = await _skillService.GetSkillsByIdAsync(projectDto.Skills);
             Project project = _mapper.Map<Project>(projectDto);
             await _projectService.AddAsync(project);
             return CreatedAtAction("GetProjectById", new { id = project.Id }, project);

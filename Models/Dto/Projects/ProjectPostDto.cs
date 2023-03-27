@@ -11,7 +11,7 @@ namespace Lagalt_Backend.Models.Dto.Projects
         public DateTime DOC { get; set; }
         public string Progress { get; set; } = null!;
         
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public List<int>? Skills { get; set; }
         //public List<int>? Tags { get; set; }
         //public List<int>? Images { get; set; }
