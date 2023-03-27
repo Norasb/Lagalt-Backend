@@ -30,12 +30,12 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProjectDto>> GetProjectById(int id)
+        public async Task<ActionResult<ProjectOneDto>> GetProjectById(int id)
         {
             try
             {
                 return Ok(
-                    _mapper.Map<ProjectDto>(
+                    _mapper.Map<ProjectOneDto>(
                     await _projectService.GetByIdAsync(id)));
 
             } catch (Exception ex)

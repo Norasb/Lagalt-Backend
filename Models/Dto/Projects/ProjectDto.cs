@@ -7,7 +7,6 @@
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;
         public string Caption { get; set; } = null!;
-        public DateTime DOC { get; set; }
         public string Progress { get; set; } = null!;
         public string Tags { get; set; } = null!;
         public int Owner { get; set; }
