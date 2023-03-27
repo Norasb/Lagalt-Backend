@@ -30,6 +30,21 @@ namespace Lagalt_Backend.Services.UserServices
             return await _context.Users.FindAsync(id);
         }
 
+        public async Task<ICollection<Application>> GetApplicationsInUser(string userId)
+        {
+            if (!await UserExists(userId))
+            {
+                throw new Exception("User does not exist");
+            }
+
+            return await _context.Users
+                .Where(u => u.Id == userId)
+                .Include(u => u.Applications)
+                .Select(u => u.Applications)
+                .FirstAsync();
+
+        }
+
         public async Task AddAsync(User obj)
         {
             await _context.Users.AddAsync(obj);
