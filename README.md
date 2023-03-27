@@ -7,18 +7,15 @@ The project consists of creating the website lagalt.no, a platform that aims to 
 The website uses Oauth through Keycloack for handling authentication, and the website's backend exposes REST API endpoints and utilizes an Azure SQL database. 
 
 ## Website Page
-https://lagalt.no/
-
+The functionalities for the website can be tested at https://lagalt.no/
 
 ## Development
 The development is done using .NET 6.0 Model Controller View framework for creating APIs. More information about the .NET MVC framework can be found from the following link: https://learn.microsoft.com/en-us/aspnet/core/mvc/overview?view=aspnetcore-6.0.
 
 ## Authors
-The authors of the project are:
+The authors of this project are:
 * Nora Sophie Backe
 * Sofie Bjørneng
 * Håvard Lund
 * Tine Lovise Storvoll
 * Sverre Vinje
-
-### ReadME to be continued..
