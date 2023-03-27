@@ -5,6 +5,7 @@ using System.Net;
 using AutoMapper;
 using Lagalt_Backend.Models.Dto.User;
 using Microsoft.AspNetCore.Authorization;
+using Lagalt_Backend.Models.Dto.Application;
 
 namespace Lagalt_Backend.Controllers
 {
@@ -48,6 +49,26 @@ namespace Lagalt_Backend.Controllers
                     });
             }
         }
+
+        [HttpGet("{id}/applications")]
+        public async Task<ActionResult<IEnumerable<ApplicationsInUserDto>>> GetUsersApplications(string id)
+        {
+            try
+            {
+                return Ok(
+                    _mapper.Map<List<ApplicationsInUserDto>>(
+                        await _userService.GetApplicationsInUser(id)));
+            } catch (Exception ex)
+            {
+                return NotFound(
+                    new ProblemDetails()
+                    {
+                        Detail = ex.Message,
+                        Status = (int)HttpStatusCode.NotFound
+                    });
+            }
+        }
+
 
         // PUT: api/User/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
