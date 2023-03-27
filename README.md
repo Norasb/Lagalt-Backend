@@ -15,6 +15,7 @@ The development is done using .NET 6.0 Model Controller View framework for creat
 ### Technologies
 * C#
 * .NET 6.0
+* Azure SQL database
 
 ## Authors
 The authors of this project are:
