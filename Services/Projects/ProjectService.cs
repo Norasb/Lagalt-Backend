@@ -1,6 +1,8 @@
 ﻿using Lagalt_Backend.Models;
 using Lagalt_Backend.Models.Domain;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Lagalt_Backend.Services.Projects
 {
@@ -58,11 +60,42 @@ namespace Lagalt_Backend.Services.Projects
             await _context.SaveChangesAsync();
         }
 
-        public async Task<ICollection<Project>> GetProjectsBySkill(string skill)
+        public async Task<ICollection<Project>> GetProjectsBySkill(string userId)
         {
-            return await _context.Projects
-                .Where(p => p.Skills.Any(s => s.Name == skill))
+            //var userSkills = await _context.Users  
+            //    .Where(u => u.Id == userId)
+            //    .SelectMany(u => u.Skills.Select(s => s.Id))
+            //    .ToListAsync();
+
+            var userSkills = await _context.Users
+                .Where(u => u.Id == userId)
+                .SelectMany(u => u.Skills, (u, s) => new { UserId = u.Id, SkillId = s.Id })
                 .ToListAsync();
+
+            var projectSkills = await _context.Projects
+                .SelectMany(p => p.Skills, (p, s) => new { ProjectId = p.Id, SkillId = s.Id })
+                .ToListAsync();
+
+            var sortedProjects = userSkills.Join(projectSkills,
+                us => us.SkillId,
+                ps => ps.SkillId,
+                (us, ps) => new
+                {
+                    ps.ProjectId,
+                    us.UserId,
+                    ps.SkillId,
+                })
+                .GroupBy(p => p.ProjectId)
+                .Select(g => new { ProjectId = g.Key, Matches = g.Select(p => p.SkillId).Distinct().Count() })
+                .OrderByDescending(g => g.Matches);
+
+            var projects = await _context.Projects
+                .Where(p => sortedProjects
+                .Select(sp => sp.ProjectId)
+                .Contains(p.Id))
+                .ToListAsync();
+
+            return projects;
         }
     }
 }
