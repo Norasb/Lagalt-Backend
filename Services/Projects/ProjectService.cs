@@ -1,6 +1,8 @@
 ﻿using Lagalt_Backend.Models;
 using Lagalt_Backend.Models.Domain;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using NuGet.ProjectModel;
 
 namespace Lagalt_Backend.Services.Projects
@@ -64,6 +66,47 @@ namespace Lagalt_Backend.Services.Projects
         {
             _context.Entry(obj).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<ICollection<Project>> GetProjectsBySkill(string userId)
+        {
+            var userSkills = await _context.Users
+                .Where(u => u.Id == userId)
+                .SelectMany(u => u.Skills, (u, s) => new { UserId = u.Id, SkillId = s.Id })
+                .ToListAsync();
+
+            var projectSkills = await _context.Projects
+                .SelectMany(p => p.Skills, (p, s) => new { ProjectId = p.Id, SkillId = s.Id })
+                .ToListAsync();
+
+            var matchingSkills = userSkills.Join(projectSkills,
+                us => us.SkillId,
+                ps => ps.SkillId,
+                (us, ps) => new
+                {
+                    ps.ProjectId,
+                    us.UserId,
+                    ps.SkillId,
+                })
+                .GroupBy(p => p.ProjectId)
+                .Select(g => new { ProjectId = g.Key, Matches = g.Select(p => p.SkillId).Distinct().Count() })
+                .OrderByDescending(g => g.Matches);
+
+            var matchingProjects = await _context.Projects
+                .Where(p => matchingSkills
+                .Select(sp => sp.ProjectId)
+                .Contains(p.Id))
+                .ToListAsync();
+
+            var remainingProjects = await _context.Projects
+                .Where(p => !matchingSkills
+                .Select(sp => sp.ProjectId)
+                .Contains(p.Id))
+                .ToListAsync();
+
+            var allProjects = matchingProjects.Concat(remainingProjects).ToList();
+
+            return allProjects;
         }
     }
 }
