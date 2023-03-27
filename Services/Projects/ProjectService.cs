@@ -71,7 +71,7 @@ namespace Lagalt_Backend.Services.Projects
                 .SelectMany(p => p.Skills, (p, s) => new { ProjectId = p.Id, SkillId = s.Id })
                 .ToListAsync();
 
-            var sortedProjects = userSkills.Join(projectSkills,
+            var matchingSkills = userSkills.Join(projectSkills,
                 us => us.SkillId,
                 ps => ps.SkillId,
                 (us, ps) => new
@@ -84,19 +84,20 @@ namespace Lagalt_Backend.Services.Projects
                 .Select(g => new { ProjectId = g.Key, Matches = g.Select(p => p.SkillId).Distinct().Count() })
                 .OrderByDescending(g => g.Matches);
 
-            var projects = await _context.Projects
-                .Where(p => sortedProjects
+            var matchingProjects = await _context.Projects
+                .Where(p => matchingSkills
                 .Select(sp => sp.ProjectId)
                 .Contains(p.Id))
                 .ToListAsync();
 
             var remainingProjects = await _context.Projects
-                .Where(p => !sortedProjects
+                .Where(p => !matchingSkills
                 .Select(sp => sp.ProjectId)
                 .Contains(p.Id))
                 .ToListAsync();
 
-            var allProjects = projects.Concat(remainingProjects).ToList();
+            var allProjects = matchingProjects.Concat(remainingProjects).ToList();
+
             return allProjects;
         }
     }
