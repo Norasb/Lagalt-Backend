@@ -56,9 +56,7 @@ namespace Lagalt_Backend.Controllers
         [HttpPost]
         public async Task<ActionResult> AddProject(ProjectPostDto projectDto)
         {
-            //var skills = await _skillService.GetSkillsByIdAsync(projectDto.Skills);
             Project project = _mapper.Map<Project>(projectDto);
-            //project.Skills = skills;
             await _projectService.AddAsync(project);
             return CreatedAtAction("GetProjectById", new { id = project.Id }, project);
         }
