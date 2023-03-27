@@ -2,6 +2,7 @@
 using Lagalt_Backend.Models.Domain;
 using Lagalt_Backend.Models.Dto.Message;
 using Lagalt_Backend.Services.Messages;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -21,6 +22,7 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<MessageDto>>> GetAllMessages()
         {
             return Ok(
@@ -29,6 +31,7 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<MessageDto>> GetMessageById(int id)
         {
             try
@@ -49,6 +52,7 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> AddMessage(MessagePostDto postMessage)
         {
             Message message = new Message()
@@ -62,6 +66,7 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult> UpdateMessage(int id, MessagePutDto putMessage)
         {
             Message existingMessage = _messageService.GetByIdAsync(id).Result;
@@ -87,6 +92,7 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult> DeleteMessage(int id)
         {
             try

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lagalt_Backend.Migrations
 {
     [DbContext(typeof(LagAltDbContext))]
-    [Migration("20230323101623_InitialDb")]
+    [Migration("20230324142036_InitialDb")]
     partial class InitialDb
     {
         /// <inheritdoc />
@@ -33,6 +33,9 @@ namespace Lagalt_Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("ApprovalStatus")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Motivation")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -40,8 +43,8 @@ namespace Lagalt_Backend.Migrations
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -78,6 +81,28 @@ namespace Lagalt_Backend.Migrations
                     b.ToTable("Image");
                 });
 
+            modelBuilder.Entity("Lagalt_Backend.Models.Domain.Link", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("URL")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Links");
+                });
+
             modelBuilder.Entity("Lagalt_Backend.Models.Domain.Message", b =>
                 {
                     b.Property<int>("Id")
@@ -89,14 +114,20 @@ namespace Lagalt_Backend.Migrations
                     b.Property<DateTime>("DOC")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
 
                     b.HasIndex("UserId");
 
@@ -115,8 +146,9 @@ namespace Lagalt_Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -157,8 +189,9 @@ namespace Lagalt_Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -203,11 +236,8 @@ namespace Lagalt_Backend.Migrations
 
             modelBuilder.Entity("Lagalt_Backend.Models.Domain.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -233,6 +263,21 @@ namespace Lagalt_Backend.Migrations
                     b.ToTable("PortfolioProject");
                 });
 
+            modelBuilder.Entity("ProjectSkill", b =>
+                {
+                    b.Property<int>("ProjectsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SkillsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProjectsId", "SkillsId");
+
+                    b.HasIndex("SkillsId");
+
+                    b.ToTable("ProjectSkill");
+                });
+
             modelBuilder.Entity("ProjectTag", b =>
                 {
                     b.Property<int>("ProjectsId")
@@ -253,8 +298,8 @@ namespace Lagalt_Backend.Migrations
                     b.Property<int>("ContributedProjectsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ContributorsId")
-                        .HasColumnType("int");
+                    b.Property<string>("ContributorsId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ContributedProjectsId", "ContributorsId");
 
@@ -268,8 +313,8 @@ namespace Lagalt_Backend.Migrations
                     b.Property<int>("SkillsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsersId")
-                        .HasColumnType("int");
+                    b.Property<string>("UsersId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("SkillsId", "UsersId");
 
@@ -306,13 +351,32 @@ namespace Lagalt_Backend.Migrations
                     b.Navigation("Project");
                 });
 
+            modelBuilder.Entity("Lagalt_Backend.Models.Domain.Link", b =>
+                {
+                    b.HasOne("Lagalt_Backend.Models.Domain.Project", "Project")
+                        .WithMany("Links")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+                });
+
             modelBuilder.Entity("Lagalt_Backend.Models.Domain.Message", b =>
                 {
+                    b.HasOne("Lagalt_Backend.Models.Domain.Project", "Project")
+                        .WithMany("Messages")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Lagalt_Backend.Models.Domain.User", "User")
                         .WithMany("Messages")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Project");
 
                     b.Navigation("User");
                 });
@@ -350,6 +414,21 @@ namespace Lagalt_Backend.Migrations
                     b.HasOne("Lagalt_Backend.Models.Domain.Project", null)
                         .WithMany()
                         .HasForeignKey("ProjectsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProjectSkill", b =>
+                {
+                    b.HasOne("Lagalt_Backend.Models.Domain.Project", null)
+                        .WithMany()
+                        .HasForeignKey("ProjectsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Lagalt_Backend.Models.Domain.Skill", null)
+                        .WithMany()
+                        .HasForeignKey("SkillsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -404,6 +483,10 @@ namespace Lagalt_Backend.Migrations
                     b.Navigation("Applications");
 
                     b.Navigation("Images");
+
+                    b.Navigation("Links");
+
+                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("Lagalt_Backend.Models.Domain.User", b =>

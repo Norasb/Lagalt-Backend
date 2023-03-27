@@ -1,42 +1,42 @@
 ﻿using AutoMapper;
 using Lagalt_Backend.Models.Domain;
-using Lagalt_Backend.Models.Dto.Skill;
-using Lagalt_Backend.Services.Skills;
+using Lagalt_Backend.Models.Dto.Link;
+using Lagalt_Backend.Services.Links;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace Lagalt_Backend.Controllers
 {
-    [Route("api/skills")]
-    [ApiController]
-    public class SkillsController : ControllerBase
+    public class LinkController : ControllerBase
     {
-        private readonly ISkillService _skillService;
+        private readonly ILinkService _linkService;
         private readonly IMapper _mapper;
 
-        public SkillsController(ISkillService skillService, IMapper mapper)
+        public LinkController(ILinkService linkService, IMapper mapper)
         {
-            _skillService = skillService;
+            _linkService = linkService;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SkillDto>>> GetAllSkills()
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<LinkDto>>> GetAllLinks()
         {
             return Ok(
-                _mapper.Map<List<SkillDto>>(
-                await _skillService.GetAllAsync()));
+                _mapper.Map<List<LinkDto>>(
+                await _linkService.GetAllAsync()));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<SkillDto>> GetSkillById(int id)
+        [Authorize]
+        public async Task<ActionResult<LinkDto>> GetLinkById(int id)
         {
             try
             {
                 return Ok(
-                    _mapper.Map<SkillDto>(
-                    await _skillService.GetByIdAsync(id)));
+                    _mapper.Map<LinkDto>(
+                    await _linkService.GetByIdAsync(id)));
 
             } catch (Exception ex)
             {
@@ -51,24 +51,24 @@ namespace Lagalt_Backend.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult> AddSkill(SkillPostDto skillDto)
+        public async Task<ActionResult> AddLink(LinkPostDto linkDto)
         {
-            Skill skill = _mapper.Map<Skill>(skillDto);
-            await _skillService.AddAsync(skill);
-            return CreatedAtAction("GetSkillById", new { id = skill.Id }, skill);
+            Link link = _mapper.Map<Link>(linkDto);
+            await _linkService.AddAsync(link);
+            return CreatedAtAction("GetSkillById", new { id = link.Id }, link);
         }
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<ActionResult> UpdateSkill(int id, SkillPutDto skillDto)
+        public async Task<ActionResult> UpdateLink(int id, LinkPutDto linkDto)
         {
 
-            Skill existingSkill = _skillService.GetByIdAsync(id).Result;
-            existingSkill.Name = skillDto.Name;
+            Link existingLink = _linkService.GetByIdAsync(id).Result;
+            existingLink.URL = linkDto.URL;
 
             try
             {
-                await _skillService.UpdateAsync(_mapper.Map<Skill>(existingSkill));
+                await _linkService.UpdateAsync(_mapper.Map<Link>(existingLink));
                 return NoContent();
             } catch (Exception ex)
             {
@@ -83,11 +83,11 @@ namespace Lagalt_Backend.Controllers
 
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<ActionResult> DeleteSkill(int id)
+        public async Task<ActionResult> DeleteLink(int id)
         {
             try
             {
-                await _skillService.DeleteByIdAsync(id);
+                await _linkService.DeleteByIdAsync(id);
                 return NoContent();
             } catch (Exception ex)
             {
