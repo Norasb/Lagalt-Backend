@@ -62,11 +62,6 @@ namespace Lagalt_Backend.Services.Projects
 
         public async Task<ICollection<Project>> GetProjectsBySkill(string userId)
         {
-            //var userSkills = await _context.Users  
-            //    .Where(u => u.Id == userId)
-            //    .SelectMany(u => u.Skills.Select(s => s.Id))
-            //    .ToListAsync();
-
             var userSkills = await _context.Users
                 .Where(u => u.Id == userId)
                 .SelectMany(u => u.Skills, (u, s) => new { UserId = u.Id, SkillId = s.Id })
@@ -95,7 +90,14 @@ namespace Lagalt_Backend.Services.Projects
                 .Contains(p.Id))
                 .ToListAsync();
 
-            return projects;
+            var remainingProjects = await _context.Projects
+                .Where(p => !sortedProjects
+                .Select(sp => sp.ProjectId)
+                .Contains(p.Id))
+                .ToListAsync();
+
+            var allProjects = projects.Concat(remainingProjects).ToList();
+            return allProjects;
         }
     }
 }
