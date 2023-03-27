@@ -19,3 +19,4 @@ The authors of this project are:
 * Håvard Lund
 * Tine Lovise Storvoll
 * Sverre Vinje
+
