@@ -4,6 +4,7 @@ using Lagalt_Backend.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lagalt_Backend.Migrations
 {
     [DbContext(typeof(LagAltDbContext))]
-    partial class LagAltDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230327114036_UpdatedUserTable")]
+    partial class UpdatedUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -329,13 +332,12 @@ namespace Lagalt_Backend.Migrations
                     b.HasOne("Lagalt_Backend.Models.Domain.Project", "Project")
                         .WithMany("Applications")
                         .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Lagalt_Backend.Models.Domain.User", "User")
                         .WithMany("Applications")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Project");
 
@@ -347,7 +349,7 @@ namespace Lagalt_Backend.Migrations
                     b.HasOne("Lagalt_Backend.Models.Domain.Project", "Project")
                         .WithMany("Images")
                         .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Project");
@@ -358,7 +360,7 @@ namespace Lagalt_Backend.Migrations
                     b.HasOne("Lagalt_Backend.Models.Domain.Project", "Project")
                         .WithMany("Links")
                         .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Project");
@@ -369,13 +371,13 @@ namespace Lagalt_Backend.Migrations
                     b.HasOne("Lagalt_Backend.Models.Domain.Project", "Project")
                         .WithMany("Messages")
                         .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Lagalt_Backend.Models.Domain.User", "User")
                         .WithMany("Messages")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Project");
@@ -388,7 +390,7 @@ namespace Lagalt_Backend.Migrations
                     b.HasOne("Lagalt_Backend.Models.Domain.User", "User")
                         .WithOne("Portfolio")
                         .HasForeignKey("Lagalt_Backend.Models.Domain.Portfolio", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -399,7 +401,7 @@ namespace Lagalt_Backend.Migrations
                     b.HasOne("Lagalt_Backend.Models.Domain.User", "Owner")
                         .WithMany("OwnedProjects")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Owner");
@@ -410,13 +412,13 @@ namespace Lagalt_Backend.Migrations
                     b.HasOne("Lagalt_Backend.Models.Domain.Portfolio", null)
                         .WithMany()
                         .HasForeignKey("PortfolioId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Lagalt_Backend.Models.Domain.Project", null)
                         .WithMany()
                         .HasForeignKey("ProjectsId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -425,13 +427,13 @@ namespace Lagalt_Backend.Migrations
                     b.HasOne("Lagalt_Backend.Models.Domain.Project", null)
                         .WithMany()
                         .HasForeignKey("ProjectsId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Lagalt_Backend.Models.Domain.Skill", null)
                         .WithMany()
                         .HasForeignKey("SkillsId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -440,13 +442,13 @@ namespace Lagalt_Backend.Migrations
                     b.HasOne("Lagalt_Backend.Models.Domain.Project", null)
                         .WithMany()
                         .HasForeignKey("ProjectsId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Lagalt_Backend.Models.Domain.Tag", null)
                         .WithMany()
                         .HasForeignKey("TagsId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -455,13 +457,13 @@ namespace Lagalt_Backend.Migrations
                     b.HasOne("Lagalt_Backend.Models.Domain.Project", null)
                         .WithMany()
                         .HasForeignKey("ContributedProjectsId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Lagalt_Backend.Models.Domain.User", null)
                         .WithMany()
                         .HasForeignKey("ContributorsId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -470,13 +472,13 @@ namespace Lagalt_Backend.Migrations
                     b.HasOne("Lagalt_Backend.Models.Domain.Skill", null)
                         .WithMany()
                         .HasForeignKey("SkillsId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Lagalt_Backend.Models.Domain.User", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
