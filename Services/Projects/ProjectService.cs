@@ -46,6 +46,13 @@ namespace Lagalt_Backend.Services.Projects
                 .FirstAsync();
         }
 
+        public async Task<Project> GetByUserIdAsync(int userid)
+        {
+            return await _context.Projects
+                .Where(p => p.UserId == userid)
+                .FirstAsync();
+        }
+
         public async Task UpdateAsync(Project obj)
         {
             _context.Entry(obj).State = EntityState.Modified;
