@@ -11,7 +11,8 @@ namespace Lagalt_Backend.Profiles
             CreateMap<PortfolioPutDTO, Portfolio>();
             CreateMap<PortfolioPostDTO, Portfolio>();
             CreateMap<Portfolio, PortfolioDTO>()
-                .ForMember(dto => dto.Projects, opt => opt.MapFrom(p => p.Projects!.Select(pr => pr.Id).ToList()));
+                .ForMember(dto => dto.Projects, opt => opt
+                .MapFrom(p => p.Projects.ToList()));
         }
     }
 }

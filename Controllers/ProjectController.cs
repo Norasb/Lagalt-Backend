@@ -100,5 +100,13 @@ namespace Lagalt_Backend.Controllers
             }
         }
 
+        [HttpGet("skill")]
+        public async Task<IActionResult> GetProjectsBySkill(string id)
+        {
+            return Ok(
+                _mapper.Map<List<ProjectDto>>(
+                await _projectService.GetProjectsBySkill(id)));
+        }
+
     }
 }
