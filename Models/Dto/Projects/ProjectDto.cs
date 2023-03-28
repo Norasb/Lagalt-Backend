@@ -2,6 +2,7 @@
 {
     public class ProjectDto
     {
+        public int Id { get; set; }
         public string Field { get; set; } = null!;
         public string Title { get; set; } = null!;
         public string Caption { get; set; } = null!;
