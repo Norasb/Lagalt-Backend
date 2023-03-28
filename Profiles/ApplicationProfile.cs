@@ -11,6 +11,11 @@ namespace Lagalt_Backend.Profiles
             CreateMap<ApplicationPutDTO, Application>();
             CreateMap<ApplicationPostDTO, Application>();
             CreateMap<Application, ApplicationDTO>();
+            CreateMap<Application, ApplicationStatusDTO>()
+                .ForMember(dto => dto.UserName, opt => opt
+                .MapFrom(a => a.User.UserName))
+                .ForMember(dto => dto.ProjectTitle, opt => opt
+                .MapFrom(a => a.Project.Title));
             CreateMap<Application, ApplicationsInUserDto>()
                 .ForMember(dto => dto.ProjectId, opt => opt
                 .MapFrom(a => a.ProjectId));
