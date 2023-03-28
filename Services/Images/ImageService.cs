@@ -62,5 +62,10 @@ namespace Lagalt_Backend.Services.ImageServices
         {
             return await _context.Images.AnyAsync(i => i.Id == id);
         }
+
+        public async Task<ICollection<Image>> GetImagesByIdAsync(List<int> imageIds)
+        {
+            return await _context.Images.Where(s => imageIds.Contains(s.Id)).ToListAsync();
+        }
     }
 }

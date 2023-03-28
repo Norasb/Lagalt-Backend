@@ -45,6 +45,11 @@ namespace Lagalt_Backend.Services.Links
                 .FirstAsync();
         }
 
+        public async Task<ICollection<Link>> GetLinksByIdAsync(List<int> linkIds)
+        {
+            return await _context.Links.Where(s => linkIds.Contains(s.Id)).ToListAsync();
+        }
+
         public async Task UpdateAsync(Link obj)
         {
             _context.Entry(obj).State = EntityState.Modified;

@@ -2,6 +2,8 @@
 using Lagalt_Backend.Models.Domain;
 using Lagalt_Backend.Models.Dto.Projects;
 using Lagalt_Backend.Models.Dto.User;
+using Lagalt_Backend.Services.ImageServices;
+using Lagalt_Backend.Services.Links;
 using Lagalt_Backend.Services.Projects;
 using Lagalt_Backend.Services.Skills;
 using Lagalt_Backend.Services.Tags;
@@ -20,13 +22,22 @@ namespace Lagalt_Backend.Controllers
         private readonly IMapper _mapper;
         private readonly ISkillService _skillService;
         private readonly ITagService _tagService;
+        private readonly IImageService _imageService;
+        private readonly ILinkService _linkService;
 
-        public ProjectController(IProjectService projectService, IMapper mapper, ISkillService skillService, ITagService tagService)
+        public ProjectController(IProjectService projectService, 
+            IMapper mapper, 
+            ISkillService skillService, 
+            ITagService tagService,
+            IImageService imageService,
+            ILinkService linkService)
         {
             _projectService = projectService;
             _mapper = mapper;
             _skillService = skillService;
             _tagService = tagService;
+            _imageService = imageService;
+            _linkService = linkService;
         }
 
         [HttpGet]
@@ -57,14 +68,14 @@ namespace Lagalt_Backend.Controllers
             }
         }
 
-  
-
-
         [HttpPost]
         public async Task<ActionResult> AddProject(ProjectPostDto projectDto)
         {
             var skills = await _skillService.GetSkillsByIdAsync(projectDto.Skills);
             var tags = await _tagService.GetTagsByIdAsync(projectDto.Tags);
+            var linkUrls = await _linkService.GetLinksByIdAsync(projectDto.LinkUrls);
+            var imageUrls = await _imageService.GetImagesByIdAsync(projectDto.ImageUrls);
+
             var newProject = new Project
             {
                 Field = projectDto.Field,
@@ -73,9 +84,11 @@ namespace Lagalt_Backend.Controllers
                 Caption = projectDto.Caption,
                 DOC = projectDto.DOC,
                 Progress = projectDto.Progress,
-                UserId = projectDto.UserId,
+                UserId = projectDto.OwnerId,
                 Skills = skills,
-                Tags = tags
+                Tags = tags,
+                Links = linkUrls,
+                Images = imageUrls
             };
 
             Project project = _mapper.Map<Project>(newProject);
