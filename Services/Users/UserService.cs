@@ -124,8 +124,24 @@ namespace Lagalt_Backend.Services.UserServices
             if (!await UserExists(obj.Id))
             {
                 throw new Exception("User not found");
-
             }
+
+            var user = await _context.Users
+                .Include(u => u.Skills)
+                .SingleOrDefaultAsync(u => u.Id == obj.Id);
+
+            user.Description = obj.Description;
+            user.Skills.Clear();
+            foreach (var skillObj in obj.Skills)
+            {
+                var skill = await _context.Skills.SingleOrDefaultAsync(s => s.Name == skillObj.Name);
+                if (skill == null)
+                {
+                    skill = _mapper.Map<Skill>(skillDto);
+                }
+                user.Skills.Add(skill);
+            }
+
             _context.Entry(obj).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
