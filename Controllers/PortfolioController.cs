@@ -61,9 +61,9 @@ namespace Lagalt_Backend.Controllers
         
         // PUT: api/Portfolios/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("{userId}")]
         [Authorize]
-        public async Task<IActionResult> PutPortfolio(int id, PortfolioPutDTO portfolioDto)
+        public async Task<IActionResult> PutPortfolio(string userId, PortfolioPutDTO portfolioDto)
         {
             if (id != portfolioDto.Id)
             {

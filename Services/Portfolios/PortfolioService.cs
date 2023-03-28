@@ -41,8 +41,8 @@ namespace Lagalt_Backend.Services.PortfolioServices
             if (!await PortfolioExists(obj.Id))
             {
                 throw new Exception("Portfolio not found");
-
             }
+
             _context.Entry(obj).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }

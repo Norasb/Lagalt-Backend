@@ -74,15 +74,15 @@ namespace Lagalt_Backend.Services.UserServices
             return projects;
         }
 
-        public async Task<Portfolio> GetPortfolioInUser(string userId)
+        public async Task<Portfolio> GetPortfolioInUser(string userName)
         {
-            if (!await UserExists(userId))
+            if (!await UserNameExist(userName))
             {
                 throw new Exception("User does not exist");
             }
 
             return await _context.Users
-                .Where(u => u.Id == userId)
+                .Where(u => u.UserName == userName)
                 .Include(u => u.Portfolio)
                     .ThenInclude(p => p.Projects)
                         .ThenInclude(pr => pr.Tags)
@@ -133,6 +133,11 @@ namespace Lagalt_Backend.Services.UserServices
         public async Task<bool> UserExists(string id)
         {
             return await _context.Users.AnyAsync(u => u.Id == id);
+        }
+
+        public async Task<bool> UserNameExist(string userName)
+        {
+            return await _context.Users.AnyAsync(u => u.UserName == userName);
         }
     }
 }

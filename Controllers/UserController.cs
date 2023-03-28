@@ -89,11 +89,11 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpGet("{id}/portfolio")]
-        public async Task<ActionResult<PortfolioDTO>> GetPortfolioByUserId(string id)
+        public async Task<ActionResult<PortfolioDTO>> GetPortfolioByUserName(string userName)
         {
             try
             {
-                return Ok(_mapper.Map<PortfolioDTO>(await _userService.GetPortfolioInUser(id)));
+                return Ok(_mapper.Map<PortfolioDTO>(await _userService.GetPortfolioInUser(userName)));
             } catch(Exception ex)
             {
                 return NotFound(new ProblemDetails()
@@ -103,6 +103,8 @@ namespace Lagalt_Backend.Controllers
                 });
             }
         }
+
+
 
 
         // PUT: api/User/5
