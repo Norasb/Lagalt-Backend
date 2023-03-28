@@ -72,6 +72,21 @@ namespace Lagalt_Backend.Services.UserServices
             return projects;
         }
 
+        public async Task<ICollection<Project>> GetOnlyOwnedProjectsInUser(string userId)
+        {
+            if (!await UserExists(userId))
+            {
+                throw new Exception("User does not exist");
+            }
+
+            return await _context.Users
+                .Where(u => u.Id == userId)
+                .Include(u => u.OwnedProjects)
+                .Select(u => u.OwnedProjects)
+                .FirstAsync();
+
+        }
+
 
         public async Task AddAsync(User obj)
         {

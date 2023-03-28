@@ -83,7 +83,25 @@ namespace Lagalt_Backend.Controllers
                 return NotFound(new ProblemDetails()
                 {
                     Detail = ex.Message,
-                    Status = ((int)HttpStatusCode.NotFound)
+                    Status = (int)HttpStatusCode.NotFound
+                });
+            }
+        }
+        
+        [HttpGet("{id}/OwnedProjects")]
+        public async Task<ActionResult<IEnumerable<ProjectDto>>> GetOnlyOwnedProjectsInUser(string id)
+        {
+            try
+            {
+                return Ok(_mapper.Map<List<ProjectDto>>(await _userService.GetOnlyOwnedProjectsInUser(id)));
+
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new ProblemDetails()
+                {
+                    Detail = ex.Message,
+                    Status = (int)HttpStatusCode.NotFound
                 });
             }
         }
