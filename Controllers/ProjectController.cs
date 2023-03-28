@@ -4,6 +4,7 @@ using Lagalt_Backend.Models.Dto.Projects;
 using Lagalt_Backend.Models.Dto.User;
 using Lagalt_Backend.Services.Projects;
 using Lagalt_Backend.Services.Skills;
+using Lagalt_Backend.Services.Tags;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,12 +19,14 @@ namespace Lagalt_Backend.Controllers
         private readonly IProjectService _projectService;
         private readonly IMapper _mapper;
         private readonly ISkillService _skillService;
+        private readonly ITagService _tagService;
 
-        public ProjectController(IProjectService projectService, IMapper mapper, ISkillService skillService)
+        public ProjectController(IProjectService projectService, IMapper mapper, ISkillService skillService, ITagService tagService)
         {
             _projectService = projectService;
             _mapper = mapper;
             _skillService = skillService;
+            _tagService = tagService;
         }
 
         [HttpGet]
@@ -61,6 +64,7 @@ namespace Lagalt_Backend.Controllers
         public async Task<ActionResult> AddProject(ProjectPostDto projectDto)
         {
             var skills = await _skillService.GetSkillsByIdAsync(projectDto.Skills);
+            var tags = await _tagService.GetTagsByIdAsync(projectDto.Tags);
             var newProject = new Project
             {
                 Field = projectDto.Field,
@@ -70,7 +74,8 @@ namespace Lagalt_Backend.Controllers
                 DOC = projectDto.DOC,
                 Progress = projectDto.Progress,
                 UserId = projectDto.UserId,
-                Skills = skills
+                Skills = skills,
+                Tags = tags
             };
 
             Project project = _mapper.Map<Project>(newProject);

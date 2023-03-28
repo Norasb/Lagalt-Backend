@@ -45,6 +45,11 @@ namespace Lagalt_Backend.Services.Tags
                 .FirstAsync();
         }
 
+        public async Task<ICollection<Tag>> GetTagsByIdAsync(List<int> tagIds)
+        {
+            return await _context.Tags.Where(t => tagIds.Contains(t.Id)).ToListAsync();
+        }
+
         public async Task UpdateAsync(Tag obj)
         {
             _context.Entry(obj).State = EntityState.Modified;

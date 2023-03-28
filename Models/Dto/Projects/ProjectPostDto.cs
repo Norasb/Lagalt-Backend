@@ -13,7 +13,7 @@ namespace Lagalt_Backend.Models.Dto.Projects
         
         public string UserId { get; set; }
         public List<int>? Skills { get; set; }
-        //public List<int>? Tags { get; set; }
+        public List<int>? Tags { get; set; }
         //public List<int>? Images { get; set; }
         //public List<int>? Links { get; set; }
     }
