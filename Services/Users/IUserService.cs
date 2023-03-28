@@ -9,6 +9,7 @@ namespace Lagalt_Backend.Services.UserServices
 
         Task<ICollection<Project>> GetProjectsInUser(string userId);
         Task<Portfolio> GetPortfolioInUser(string userId);
+        Task<ICollection<Project>> GetOnlyOwnedProjectsInUser(string userId);
 
     }
 }
