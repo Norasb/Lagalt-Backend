@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Lagalt_Backend.Models.Domain;
 using Lagalt_Backend.Models.Dto.Projects;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace Lagalt_Backend.Profiles
 {
@@ -9,6 +10,7 @@ namespace Lagalt_Backend.Profiles
         public ProjectProfile()
         {
             CreateMap<ProjectPostDto, Project>();
+
             CreateMap<ProjectPutDto, Project>();
             CreateMap<Project, ProjectDto>()
                 .ForMember(dto => dto.Owner, opt => opt
