@@ -56,7 +56,21 @@ namespace Lagalt_Backend.Services.UserServices
             var user = await _context.Users
                 .Where(u => u.Id == userId)
                 .Include(u => u.OwnedProjects)
+                    .ThenInclude(p => p.Skills)
+                .Include(u => u.OwnedProjects)
+                    .ThenInclude(p => p.Tags)
+                .Include(u => u.OwnedProjects)
+                    .ThenInclude(p => p.Images)
+                .Include(u => u.OwnedProjects)
+                    .ThenInclude(p => p.Owner)
                 .Include(u => u.ContributedProjects)
+                    .ThenInclude(p => p.Skills)
+                .Include(u => u.ContributedProjects)
+                    .ThenInclude(p => p.Tags)
+                .Include(u => u.ContributedProjects)
+                    .ThenInclude(p => p.Images)
+                .Include(u => u.ContributedProjects)
+                    .ThenInclude(p => p.Owner)
                 .Select(u => new
                 {
                     u.OwnedProjects,
