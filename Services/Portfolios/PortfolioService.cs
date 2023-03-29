@@ -1,7 +1,7 @@
 ﻿using Lagalt_Backend.Models;
 using Lagalt_Backend.Models.Domain;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
+
 
 namespace Lagalt_Backend.Services.PortfolioServices
 {

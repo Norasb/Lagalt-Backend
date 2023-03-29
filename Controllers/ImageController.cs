@@ -1,33 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Lagalt_Backend.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using Lagalt_Backend.Models.Domain;
 using Lagalt_Backend.Services.ImageServices;
 using System.Net;
+using AutoMapper;
+using Lagalt_Backend.Models.Dto.Image;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Lagalt_Backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/images")]
     [ApiController]
     public class ImageController : ControllerBase
     {
         private readonly IImageService _imageService;
+        private readonly IMapper _mapper;
 
-        public ImageController(IImageService imageService)
+        public ImageController(IImageService imageService, IMapper mapper)
         {
             _imageService = imageService;
+            _mapper = mapper;
         }
 
         // GET: api/Image
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Image>>> GetImages()
+        public async Task<ActionResult<IEnumerable<ImageDTO>>> GetImages()
         {
-            return Ok(await _imageService.GetAllAsync());
+            return Ok(
+                _mapper.Map<List<ImageDTO>>(
+                await _imageService.GetAllAsync()));
         }
 
         // GET: api/Image/5
@@ -36,7 +36,9 @@ namespace Lagalt_Backend.Controllers
         {
             try
             {
-                return Ok(await _imageService.GetByIdAsync(id));
+                return Ok(
+                    _mapper.Map<ImageDTO>(
+                    await _imageService.GetByIdAsync(id)));
             } catch (Exception ex)
             {
                 return NotFound(
@@ -51,16 +53,17 @@ namespace Lagalt_Backend.Controllers
         // PUT: api/Image/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutImage(int id, Image image)
+        [Authorize]
+        public async Task<ActionResult> PutImage(int id, ImagePutDTO imageDto)
         {
-            if (id != image.Id)
+            if (id != imageDto.Id)
             {
                 return BadRequest();
             }
 
             try
             {
-                await _imageService.UpdateAsync(image);
+                await _imageService.UpdateAsync(_mapper.Map<Image>(imageDto));
                 return NoContent();
             } catch (Exception ex)
             {
@@ -76,14 +79,17 @@ namespace Lagalt_Backend.Controllers
         // POST: api/Image
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Image>> PostImage(Image image)
+        [Authorize]
+        public async Task<ActionResult<ImagePostDTO>> PostImage(ImagePostDTO imageDto)
         {
+            Image image = _mapper.Map<Image>(imageDto);
             await _imageService.AddAsync(image);
             return CreatedAtAction("GetImage", new { id = image.Id }, image);
         }
 
         // DELETE: api/Image/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteImage(int id)
         {
             try
