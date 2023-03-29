@@ -2,6 +2,6 @@
 {
     public class SkillUserDto
     {
-        public string Name { get; set; } = null!;
+        public int Name { get; set; }
     }
 }

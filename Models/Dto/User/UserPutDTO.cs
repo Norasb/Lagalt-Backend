@@ -7,6 +7,6 @@ namespace Lagalt_Backend.Models.Dto.User
     {
         public string Id { get; set; } = null!;
         public string Description { get; set; } = null!;
-        public List<SkillUserDto> Skills { get; set; } = new List<SkillUserDto>();
+        public List<string> Skills { get; set; } = new List<string>();
     }
 }
