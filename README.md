@@ -31,7 +31,7 @@ The authors of this project are:
 * Tine Lovise Storvoll
 * Sverre Vinje
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
-### User manual
+# User manual
 In this section, we will give instruction on how to use the website. The first thing you meet when visiting website is the project site. It will look like this:
 ![image](https://user-images.githubusercontent.com/55004319/228572954-19c20e5d-3d4e-45dd-ba86-21935bf55217.png)
 
