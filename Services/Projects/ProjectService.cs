@@ -38,6 +38,11 @@ namespace Lagalt_Backend.Services.Projects
         public async Task<ICollection<Project>> GetAllAsync()
         {
             return await _context.Projects
+                .Include(p => p.Owner)
+                .Include(p => p.Contributors)
+                .Include(p => p.Images)
+                .Include(p => p.Tags)
+                .Include(p => p.Skills)
                 .ToListAsync();
         }
 
@@ -88,12 +93,22 @@ namespace Lagalt_Backend.Services.Projects
                 .Where(p => matchingSkills
                 .Select(sp => sp.ProjectId)
                 .Contains(p.Id))
+                .Include(p => p.Owner)
+                .Include(p => p.Contributors)
+                .Include(p => p.Images)
+                .Include(p => p.Tags)
+                .Include(p => p.Skills)
                 .ToListAsync();
 
             var remainingProjects = await _context.Projects
                 .Where(p => !matchingSkills
                 .Select(sp => sp.ProjectId)
                 .Contains(p.Id))
+                .Include(p => p.Owner)
+                .Include(p => p.Contributors)
+                .Include(p => p.Images)
+                .Include(p => p.Tags)
+                .Include(p => p.Skills)
                 .ToListAsync();
 
             var allProjects = matchingProjects.Concat(remainingProjects).ToList();
