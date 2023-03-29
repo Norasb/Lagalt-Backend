@@ -52,7 +52,8 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpGet("{id}/applications")]
-        public async Task<ActionResult<IEnumerable<ApplicationsInUserDto>>> GetUsersApplications(string id)
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<ApplicationsInUserDto>>> GetUserApplications(string id)
         {
             try
             {
@@ -71,7 +72,7 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpGet("{id}/projects")]
-        public async Task<ActionResult<IEnumerable<ProjectDto>>> GetProjectByUserId(string id)
+        public async Task<ActionResult<IEnumerable<ProjectDto>>> GetProjectsByUserId(string id)
         {
             try
             {
@@ -126,6 +127,7 @@ namespace Lagalt_Backend.Controllers
         // PUT: api/User/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutUser(string id, UserPutDTO userDto)
         {
             if (id != userDto.Id)

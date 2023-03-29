@@ -52,6 +52,7 @@ namespace Lagalt_Backend.Controllers
 
         // GET: api/Application/
         [HttpGet("{id}/notapproved")]
+        [Authorize]
         public async Task<ActionResult<ApplicationDTO>> GetNotApprovedApplicationsInProject(int id)
         {
             return Ok(_mapper.Map<List<ApplicationStatusDTO>>(await _projectService.GetNotApprovedApplications(id)));
@@ -68,6 +69,7 @@ namespace Lagalt_Backend.Controllers
         }
 
         [HttpPut("{id}/update")]
+        [Authorize]
         public async Task<ActionResult> UpdateProject(int id, ProjectPutDto project)
         {
             try

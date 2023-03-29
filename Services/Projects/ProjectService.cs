@@ -16,7 +16,60 @@ namespace Lagalt_Backend.Services.Projects
 
         public async Task AddAsync(Project obj)
         {
-            await _context.AddAsync(obj);
+
+            var project = new Project
+            {
+                Field = obj.Field,
+                Title = obj.Title,
+                Caption = obj.Caption,
+                Description = obj.Description,
+                Progress = obj.Progress,
+                Owner = obj.Owner
+            };
+
+            var owner = await _context.Users.SingleOrDefaultAsync(u => u.Id == obj.Owner.Id);
+            project.Owner = owner;
+
+            foreach (var skillName in obj.Skills)
+            {
+                var skill = await _context.Skills.SingleOrDefaultAsync(s => s.Name == skillName.Name);
+                project.Skills.Add(skill);
+            }
+
+            foreach (var tagName in obj.Tags)
+            {
+                var tag = await _context.Tags.SingleOrDefaultAsync(t => t.Name == tagName.Name);
+                if (tag == null)
+                {
+                    tag = new Tag { Name = tagName.Name };
+                    _context.Tags.Add(tag);
+                }
+                project.Tags.Add(tag);
+            }
+
+            foreach (var linkUrl in obj.Links)
+            {
+                var link = await _context.Links.SingleOrDefaultAsync(l => l.URL == linkUrl.URL);
+                if (link == null)
+                {
+                    link = new Link { URL = linkUrl.URL };
+                    _context.Links.Add(link);
+                }
+                project.Links.Add(link);
+            }
+
+            foreach (var imageUrl in obj.Images)
+            {
+                var image = await _context.Images.SingleOrDefaultAsync(i => i.Url == imageUrl.Url);
+                if (image == null)
+                {
+                    image = new Image { Url = imageUrl.Url };
+                    _context.Images.Add(image);
+                }
+                project.Images.Add(image);
+            }
+
+            await _context.AddAsync(project);
             await _context.SaveChangesAsync();
         }
 
