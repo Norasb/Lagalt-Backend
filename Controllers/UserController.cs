@@ -7,6 +7,7 @@ using Lagalt_Backend.Models.Dto.User;
 using Microsoft.AspNetCore.Authorization;
 using Lagalt_Backend.Models.Dto.Application;
 using Lagalt_Backend.Models.Dto.Projects;
+using Lagalt_Backend.Models.Dto.Portfolio;
 
 namespace Lagalt_Backend.Controllers
 {
@@ -82,6 +83,40 @@ namespace Lagalt_Backend.Controllers
                 return NotFound(new ProblemDetails()
                 {
                     Detail = ex.Message,
+                    Status = (int)HttpStatusCode.NotFound
+                });
+            }
+        }
+        
+        [HttpGet("{id}/OwnedProjects")]
+        public async Task<ActionResult<IEnumerable<ProjectDto>>> GetOnlyOwnedProjectsInUser(string id)
+        {
+            try
+            {
+                return Ok(_mapper.Map<List<ProjectDto>>(await _userService.GetOnlyOwnedProjectsInUser(id)));
+
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new ProblemDetails()
+                {
+                    Detail = ex.Message,
+                    Status = (int)HttpStatusCode.NotFound
+                });
+            }
+        }
+
+        [HttpGet("{id}/portfolio")]
+        public async Task<ActionResult<PortfolioDTO>> GetPortfolioByUserId(string id)
+        {
+            try
+            {
+                return Ok(_mapper.Map<PortfolioDTO>(await _userService.GetPortfolioInUser(id)));
+            } catch(Exception ex)
+            {
+                return NotFound(new ProblemDetails()
+                {
+                    Detail = ex.Message,
                     Status = ((int)HttpStatusCode.NotFound)
                 });
             }
@@ -91,7 +126,6 @@ namespace Lagalt_Backend.Controllers
         // PUT: api/User/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [Authorize]
         public async Task<IActionResult> PutUser(string id, UserPutDTO userDto)
         {
             if (id != userDto.Id)
@@ -111,6 +145,7 @@ namespace Lagalt_Backend.Controllers
                     Detail = ex.Message,
                     Status = ((int)HttpStatusCode.NotFound)
                 });
+                
             };
         }
 

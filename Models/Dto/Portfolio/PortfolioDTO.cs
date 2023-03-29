@@ -1,16 +1,11 @@
 ﻿using Lagalt_Backend.Models.Domain;
+using Lagalt_Backend.Models.Dto.Projects;
 
 namespace Lagalt_Backend.Models.Dto.Portfolio
 {
     public class PortfolioDTO
     {
-        public int Id { get; set; }
         public string Description { get; set; } = null!;
-
-        // Relationships
-        public int UserId { get; set; }
-
-        public int? ProjectId { get; set; }
-        public List<int> Projects { get; set; } = new List<int>();
+        public List<ProjectDto> Projects { get; set; } = new List<ProjectDto>();
     }
 }

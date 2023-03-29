@@ -38,9 +38,11 @@ namespace Lagalt_Backend.Profiles
             CreateMap<Project, ProjectDto>()
                 .ForMember(dto => dto.Owner, opt => opt
                 .MapFrom(p => p.Owner.Id))
-                .ForMember(dto => dto.Contributors, opt => opt
-                .MapFrom(p => p.Contributors.Select(c => c.Id).ToList()))
-                .ForMember(dto => dto.Images, opt => opt
+                .ForMember(dto => dto.Tags, opt => opt
+                .MapFrom(p => p.Tags.Select(t => t.Name).ToList()))
+                .ForMember(dto => dto.Skills, opt => opt
+                .MapFrom(p => p.Skills.Select(s => s.Name).ToList()))
+                .ForMember(dto => dto.ImageUrls, opt => opt
                 .MapFrom(p => p.Images.Select(c => c.Url).ToList()));
 
             CreateMap<Project, ProjectOneDto>()

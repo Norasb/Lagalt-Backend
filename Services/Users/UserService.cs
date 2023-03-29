@@ -1,8 +1,6 @@
 ﻿using Lagalt_Backend.Models;
 using Lagalt_Backend.Models.Domain;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Net;
 
 namespace Lagalt_Backend.Services.UserServices
 {
@@ -71,9 +69,49 @@ namespace Lagalt_Backend.Services.UserServices
                 throw new Exception("User not found.");
             }
 
-            // Combine both collections and return the result.
+            // Combine both collections and returns the result.
             var projects = user.OwnedProjects.Concat(user.ContributedProjects).ToList();
             return projects;
+        }
+
+        public async Task<Portfolio> GetPortfolioInUser(string userId)
+        {
+            if (!await UserExists(userId))
+            {
+                throw new Exception("User does not exist");
+            }
+
+            return await _context.Users
+                .Where(u => u.Id == userId)
+                .Include(u => u.Portfolio)
+                    .ThenInclude(p => p.Projects)
+                        .ThenInclude(pr => pr.Tags)
+                .Include(u => u.Portfolio)
+                    .ThenInclude(p => p.Projects)
+                        .ThenInclude(pr => pr.Skills)
+                .Include(u => u.Portfolio)
+                    .ThenInclude(p => p.Projects)
+                        .ThenInclude(pr => pr.Owner)
+                .Include(u => u.Portfolio)
+                    .ThenInclude(p => p.Projects)
+                        .ThenInclude(pr => pr.Images)
+                .Select(u => u.Portfolio)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<ICollection<Project>> GetOnlyOwnedProjectsInUser(string userId)
+        {
+            if (!await UserExists(userId))
+            {
+                throw new Exception("User does not exist");
+            }
+
+            return await _context.Users
+                .Where(u => u.Id == userId)
+                .Include(u => u.OwnedProjects)
+                .Select(u => u.OwnedProjects)
+                .FirstAsync();
+
         }
 
 
@@ -101,9 +139,22 @@ namespace Lagalt_Backend.Services.UserServices
             if (!await UserExists(obj.Id))
             {
                 throw new Exception("User not found");
-
             }
-            _context.Entry(obj).State = EntityState.Modified;
+
+            User user = await _context.Users
+                .Where(u => u.Id == obj.Id)
+                .Include(u => u.Skills)
+                .FirstAsync();
+
+            user.Description = obj.Description;
+
+            foreach (var skillName in obj.Skills)
+            {
+                var skill = await _context.Skills.SingleOrDefaultAsync(s => s.Name == skillName.Name);
+                user.Skills.Add(skill);
+            }
+            
+            _context.Entry(user).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 

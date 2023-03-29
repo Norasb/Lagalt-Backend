@@ -1,8 +1,6 @@
 ﻿using Lagalt_Backend.Models;
 using Lagalt_Backend.Models.Domain;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace Lagalt_Backend.Services.Projects
 {
@@ -38,6 +36,11 @@ namespace Lagalt_Backend.Services.Projects
         public async Task<ICollection<Project>> GetAllAsync()
         {
             return await _context.Projects
+                .Include(p => p.Owner)
+                .Include(p => p.Contributors)
+                .Include(p => p.Images)
+                .Include(p => p.Tags)
+                .Include(p => p.Skills)
                 .ToListAsync();
         }
 
@@ -96,17 +99,36 @@ namespace Lagalt_Backend.Services.Projects
                 .Where(p => matchingSkills
                 .Select(sp => sp.ProjectId)
                 .Contains(p.Id))
+                .Include(p => p.Owner)
+                .Include(p => p.Contributors)
+                .Include(p => p.Images)
+                .Include(p => p.Tags)
+                .Include(p => p.Skills)
                 .ToListAsync();
 
             var remainingProjects = await _context.Projects
                 .Where(p => !matchingSkills
                 .Select(sp => sp.ProjectId)
                 .Contains(p.Id))
+                .Include(p => p.Owner)
+                .Include(p => p.Contributors)
+                .Include(p => p.Images)
+                .Include(p => p.Tags)
+                .Include(p => p.Skills)
                 .ToListAsync();
 
             var allProjects = matchingProjects.Concat(remainingProjects).ToList();
 
             return allProjects;
+        }
+
+        public async Task<ICollection<Application>> GetNotApprovedApplications(int projectId)
+        {
+            return await _context.Applications
+                .Where(a => a.ProjectId == projectId && a.ApprovalStatus == false)
+                .Include(a => a.User)
+                .Include(a => a.Project)
+                .ToListAsync();
         }
     }
 }
