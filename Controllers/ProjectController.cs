@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Lagalt_Backend.Models.Domain;
+using Lagalt_Backend.Models.Dto.Application;
 using Lagalt_Backend.Models.Dto.Projects;
 using Lagalt_Backend.Services.Projects;
 using Microsoft.AspNetCore.Authorization;
@@ -49,7 +50,12 @@ namespace Lagalt_Backend.Controllers
             }
         }
 
-  
+        // GET: api/Application/
+        [HttpGet("{id}/notapproved")]
+        public async Task<ActionResult<ApplicationDTO>> GetNotApprovedApplicationsInProject(int id)
+        {
+            return Ok(_mapper.Map<List<ApplicationStatusDTO>>(await _projectService.GetNotApprovedApplications(id)));
+        }
 
 
         [HttpPost]
