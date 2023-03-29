@@ -126,7 +126,6 @@ namespace Lagalt_Backend.Controllers
         // PUT: api/User/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [Authorize]
         public async Task<IActionResult> PutUser(string id, UserPutDTO userDto)
         {
             if (id != userDto.Id)
@@ -146,6 +145,7 @@ namespace Lagalt_Backend.Controllers
                     Detail = ex.Message,
                     Status = ((int)HttpStatusCode.NotFound)
                 });
+                
             };
         }
 

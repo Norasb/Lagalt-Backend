@@ -62,14 +62,5 @@ namespace Lagalt_Backend.Services.ApplicationServices
         {
             return await _context.Applications.AnyAsync(a => a.Id == id);
         }
-
-        public async Task<ICollection<Application>> GetNotApprovedApplications(int projectId)
-        {
-            return await _context.Applications
-                .Where(a => a.ProjectId == projectId && a.ApprovalStatus == false)
-                .Include(a => a.User)
-                .Include(a => a.Project)
-                .ToListAsync();
-        }
     }
 }
