@@ -1,8 +1,6 @@
 ﻿using Lagalt_Backend.Models;
 using Lagalt_Backend.Models.Domain;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace Lagalt_Backend.Services.Projects
 {
@@ -114,6 +112,15 @@ namespace Lagalt_Backend.Services.Projects
             var allProjects = matchingProjects.Concat(remainingProjects).ToList();
 
             return allProjects;
+        }
+
+        public async Task<ICollection<Application>> GetNotApprovedApplications(int projectId)
+        {
+            return await _context.Applications
+                .Where(a => a.ProjectId == projectId && a.ApprovalStatus == false)
+                .Include(a => a.User)
+                .Include(a => a.Project)
+                .ToListAsync();
         }
     }
 }
