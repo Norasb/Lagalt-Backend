@@ -67,8 +67,7 @@ namespace Lagalt_Backend.Controllers
             return CreatedAtAction("GetProjectById", new { id = project.Id }, project);
         }
 
-        [HttpPut("{id}")]
-        [Authorize]
+        [HttpPut("{id}/update")]
         public async Task<ActionResult> UpdateProject(int id, ProjectPutDto project)
         {
             try

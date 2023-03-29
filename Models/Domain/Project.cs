@@ -16,10 +16,10 @@ namespace Lagalt_Backend.Models.Domain
 
         // Relationships
         [InverseProperty("OwnedProjects")]
-        public User Owner { get; set; } = null!;
+        public User? Owner { get; set; } = null!;
 
         [ForeignKey("User")]
-        public string UserId { get; set; } = null!;
+        public string? UserId { get; set; } = null!;
 
         [InverseProperty("ContributedProjects")]
         public ICollection<User>? Contributors { get; set; } = new List<User>();
