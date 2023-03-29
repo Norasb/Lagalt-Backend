@@ -81,7 +81,7 @@ namespace Lagalt_Backend.Migrations
                     Caption = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DOC = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Progress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -91,7 +91,7 @@ namespace Lagalt_Backend.Migrations
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(

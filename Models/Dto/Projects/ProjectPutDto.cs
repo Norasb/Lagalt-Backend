@@ -11,10 +11,10 @@ namespace Lagalt_Backend.Models.Dto.Projects
         public string Caption { get; set; } = null!;
         public string Progress { get; set; } = null!;
         public List<string> Tags { get; set; } = new List<string>();
-        //public List<string> Skills { get; set; } = new List<string>();
-        //public List<string> ImageUrls { get; set; } = new List<string>();
-        //public List<string> Links { get; set; } = new List<string>();
-        //public List<string> UsersContributed { get; set; } = new List<string>();
+        public List<string> Skills { get; set; } = new List<string>();
+        public List<string> ImageUrls { get; set; } = new List<string>();
+        public List<string> Links { get; set; } = new List<string>();
+        public List<string> UsersContributed { get; set; } = new List<string>();
     }
 }
 

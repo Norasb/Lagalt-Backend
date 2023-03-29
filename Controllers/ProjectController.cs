@@ -67,14 +67,9 @@ namespace Lagalt_Backend.Controllers
             return CreatedAtAction("GetProjectById", new { id = project.Id }, project);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}/update")]
         public async Task<ActionResult> UpdateProject(int id, ProjectPutDto project)
         {
-
-            //Project project1 = _mapper.Map<Project>(project);
-            //project1.DOC = DateTime.Now;
-            //project1.Id = id;
-
             try
             {
                 await _projectService.UpdateAsync(_mapper.Map<Project>(project));

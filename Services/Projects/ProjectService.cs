@@ -59,15 +59,115 @@ namespace Lagalt_Backend.Services.Projects
 
         public async Task UpdateAsync(Project obj)
         {
+            Project project = await _context.Projects
+                .Where(p => p.Id == obj.Id)
+                .Include(p => p.Tags)
+                .Include(p => p.Skills)
+                .Include(p => p.Images)
+                .Include(p => p.Links)
+                .Include(p => p.Contributors)
+                .FirstAsync();
 
-            List<Tag?> tags = obj.Tags
-                .Select(tid => _context.Tags
-                .SingleOrDefault(t => t.Id == tid.Id))
-                .ToList();
-            obj.Tags = tags;
+            if (project == null)
+            {
+                throw new Exception("Project not found");
+            }
+            project.Id = obj.Id;
+            project.Title = obj.Title;
+            project.Field = obj.Field;
+            project.Caption = obj.Caption;
+            project.Description = obj.Description;
+            project.Progress = obj.Progress;
+            //project.DOC = DateTime.Now;
+            //project.UserId = obj.UserId;
+            //project.Owner = obj.Owner;
 
 
-            _context.Entry(obj).State = EntityState.Modified;
+            foreach (var skillName in obj.Skills)
+            {
+                var skill = await _context.Skills.SingleOrDefaultAsync(s => s.Name == skillName.Name);
+                project.Skills.Add(skill);
+            }
+
+            foreach (var contributor in obj.Contributors)
+            {
+                var user = await _context.Users.FindAsync(contributor.Id);
+                project.Contributors.Add(user);
+            }
+
+            foreach (var imageUrl in obj.Images)
+            {
+                var image = await _context.Images.SingleOrDefaultAsync(i => i.Url == imageUrl.Url);
+                if (image == null)
+                {
+                    image = new Image { Url = imageUrl.Url };
+                    _context.Images.Add(image);
+                }
+                project.Images.Add(image);
+            }
+
+            foreach (var linkUrl in obj.Links)
+            {
+                var link = await _context.Links.SingleOrDefaultAsync(l => l.URL == linkUrl.URL);
+                if (link == null)
+                {
+                    link = new Link { URL = linkUrl.URL };
+                    _context.Links.Add(link);
+                }
+                project.Links.Add(link);
+            }
+
+            foreach (var tagName in obj.Tags)
+            {
+                var tag = await _context.Tags.SingleOrDefaultAsync(t => t.Name == tagName.Name);
+                if (tag == null)
+                {
+                    tag = new Tag { Name = tagName.Name };
+                    _context.Tags.Add(tag);
+                }
+                project.Tags.Add(tag);
+            }
+
+
+
+            //Ready if we want the availablity to remove something that is not presented in the input body
+            // Remove any skills not present in the updated object
+            //var skillsToRemove = project.Skills.Where(s => !obj.Skills.Any(os => os.Name == s.Name)).ToList();
+            //foreach (var skill in skillsToRemove)
+            //{
+            //    project.Skills.Remove(skill);
+            //}
+
+            //// Remove any images not present in the updated object
+            //var imagesToRemove = project.Images.Where(i => !obj.Images.Any(oi => oi.Id == i.Id)).ToList();
+            //foreach (var image in imagesToRemove)
+            //{
+            //    project.Images.Remove(image);
+            //}
+
+            //// Remove any links not present in the updated object
+            //var linksToRemove = project.Links.Where(l => !obj.Links.Any(ol => ol.Id == l.Id)).ToList();
+            //foreach (var link in linksToRemove)
+            //{
+            //    project.Links.Remove(link);
+            //}
+
+            //// Remove any tags not present in the updated object
+            //var tagsToRemove = project.Tags.Where(t => !obj.Tags.Any(ot => ot.Name == t.Name)).ToList();
+            //foreach (var tag in tagsToRemove)
+            //{
+            //    project.Tags.Remove(tag);
+            //}
+
+            //// Remove any contributors not present in the updated object
+            //var contributorsToRemove = project.Contributors.Where(c => !obj.Contributors.Any(oc => oc.Id == c.Id)).ToList();
+            //foreach (var contributor in contributorsToRemove)
+            //{
+            //    project.Contributors.Remove(contributor);
+            //}
+
+
+            _context.Entry(project).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 
