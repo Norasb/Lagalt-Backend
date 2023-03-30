@@ -30,6 +30,6 @@ The authors of this project are:
 * Tine Lovise Storvoll
 * Sverre Vinje
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# User manual
-The following youtube video goes through the functionalities of the website and how to use them:  
-https://www.youtube.com/watch?v=C1nhJqucTGk
+# User manual and endpoint documentation
+* The following youtube video goes through the functionalities of the website and how to use them: https://www.youtube.com/watch?v=C1nhJqucTGk.
+* For the endpoint documentation there is a pdf file in uploaded in the file section named "Team Lagalt NET_apidocs". 
