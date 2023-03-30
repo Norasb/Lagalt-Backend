@@ -29,7 +29,7 @@ namespace Lagalt_Backend.Controllers
         /// <summary>
         /// Get all projects from the database.
         /// </summary>
-        /// <returns>List<Project></returns>
+        /// <returns>List of projects</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProjectDto>>> GetAllProjects()
         {
@@ -68,7 +68,7 @@ namespace Lagalt_Backend.Controllers
         /// Get all application in a project that have not been approved yet from the database by project ID. 
         /// </summary>
         /// <param name="id">Project ID</param>
-        /// <returns></returns>
+        /// <returns>List of ApplicationStatusDTO</returns>
         [HttpGet("{id}/notapproved")]
         public async Task<ActionResult<ApplicationDTO>> GetNotApprovedApplicationsInProject(int id)
         {
@@ -79,7 +79,7 @@ namespace Lagalt_Backend.Controllers
         /// Add a project to the database.
         /// </summary>
         /// <param name="projectPostDto">ProjectPostDTO</param>
-        /// <returns></returns>
+        /// <returns>ProjectDTO</returns>
         [HttpPost]
         [Authorize]
         public async Task<ActionResult> AddProject(ProjectPostDto projectPostDto)
@@ -145,7 +145,7 @@ namespace Lagalt_Backend.Controllers
         /// Gets projects from the database and orders them by which matches the user's skills the most.
         /// </summary>
         /// <param name="id">User ID</param>
-        /// <returns>List<Project></returns>
+        /// <returns>List of projects</returns>
         [HttpGet("skill")]
         public async Task<IActionResult> GetProjectsBySkill(string id)
         {

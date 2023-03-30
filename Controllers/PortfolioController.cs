@@ -31,7 +31,7 @@ namespace Lagalt_Backend.Controllers
         /// <summary>
         /// Get all portfolios from the database.
         /// </summary>
-        /// <returns>List<Portfolio></returns>
+        /// <returns>List of Portfolios</returns>
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<IEnumerable<PortfolioDTO>>> GetPortfolios()
