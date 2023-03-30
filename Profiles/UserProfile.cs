@@ -4,6 +4,9 @@ using Lagalt_Backend.Models.Dto.User;
 
 namespace Lagalt_Backend.Profiles
 {
+    /// <summary>
+    /// Mappings for User entity to Post, Put and Read DTOs.
+    /// </summary>
     public class UserProfile : Profile
     {
         public UserProfile() 

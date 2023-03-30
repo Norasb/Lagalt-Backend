@@ -5,11 +5,15 @@ using System.Net;
 using AutoMapper;
 using Lagalt_Backend.Models.Dto.Application;
 using Microsoft.AspNetCore.Authorization;
+using System.Net.Mime;
 
 namespace Lagalt_Backend.Controllers
 {
     [Route("api/applications")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class ApplicationController : ControllerBase
     {
         private readonly IApplicationService _applicationService;
@@ -22,6 +26,10 @@ namespace Lagalt_Backend.Controllers
         }
 
         // GET: api/Application
+        /// <summary>
+        /// Gets all applications in the database.
+        /// </summary>
+        /// <returns>List<Application></returns>
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<IEnumerable<ApplicationDTO>>> GetApplications()
@@ -32,6 +40,11 @@ namespace Lagalt_Backend.Controllers
         }
 
         // GET: api/Application/5
+        /// <summary>
+        /// Gets a specific application from the database by its ID.
+        /// </summary>
+        /// <param name="id">Application ID</param>
+        /// <returns>Application</returns>
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<ApplicationDTO>> GetApplication(int id)
@@ -51,6 +64,15 @@ namespace Lagalt_Backend.Controllers
         }
 
         // PUT: api/Application/5
+        /// <summary>
+        /// Updates an application in the database by ID.
+        /// </summary>
+        /// <param name="id">Application ID</param>
+        /// <param name="applicationDto">ApplicationDTO</param>
+        /// <returns>
+        /// BadRequest if the ID in the DTO does not match the ID from the URL. 
+        /// NoContent if the application is successfully updated.
+        /// NotFound if the update fails.</returns>
         [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> PutApplication(int id, ApplicationPutDTO applicationDto)
@@ -77,6 +99,11 @@ namespace Lagalt_Backend.Controllers
         }
 
         // POST: api/Application
+        /// <summary>
+        /// Add an application to the database.
+        /// </summary>
+        /// <param name="applicationDto">ApplicationPostDTO</param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<ApplicationPostDTO>> PostApplication(ApplicationPostDTO applicationDto)
@@ -87,6 +114,12 @@ namespace Lagalt_Backend.Controllers
         }
 
         // DELETE: api/Application/5
+        /// <summary>
+        /// Deletes an application from the database by ID.
+        /// </summary>
+        /// <param name="id">Application ID</param>
+        /// <returns>NoContent if the application is successfully deleted.
+        /// NotFound if the deletion fails.</returns>
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<IActionResult> DeleteApplication(int id)
@@ -109,6 +142,11 @@ namespace Lagalt_Backend.Controllers
         }
 
         // GET: api/Application/
+        /// <summary>
+        /// ?
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
         [HttpGet("notapproved")]
         public async Task<ActionResult<ApplicationDTO>> GetNotApprovedApplications(int projectId)
         {

@@ -4,6 +4,9 @@ using Lagalt_Backend.Models.Dto.Application;
 
 namespace Lagalt_Backend.Profiles
 {
+    /// <summary>
+    /// Mappings for Application entity to Post, Put and Read DTOs.
+    /// </summary>
     public class ApplicationProfile : Profile
     {
         public ApplicationProfile()

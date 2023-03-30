@@ -5,11 +5,15 @@ using System.Net;
 using AutoMapper;
 using Lagalt_Backend.Models.Dto.Portfolio;
 using Microsoft.AspNetCore.Authorization;
+using System.Net.Mime;
 
 namespace Lagalt_Backend.Controllers
 {
     [Route("api/portfolios")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class PortfolioController : ControllerBase
     {
         private readonly IPortfolioService _portfolioService;
@@ -24,6 +28,10 @@ namespace Lagalt_Backend.Controllers
 
         
         // GET: api/Portfolios
+        /// <summary>
+        /// Get all portfolios from the database.
+        /// </summary>
+        /// <returns>List<Portfolio></returns>
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<IEnumerable<PortfolioDTO>>> GetPortfolios()
@@ -31,6 +39,11 @@ namespace Lagalt_Backend.Controllers
             return Ok(_mapper.Map<List<PortfolioDTO>>(await _portfolioService.GetAllAsync()));
         }
 
+        /// <summary>
+        /// Add a portfolio to the database.
+        /// </summary>
+        /// <param name="portfolioDto">PortfolioPostDTO</param>
+        /// <returns>PortfolioDTO</returns>
         [HttpPost]
         public async Task<ActionResult<Portfolio>> PostPortfolio(PortfolioPostDTO portfolioDto)
         {
@@ -40,6 +53,11 @@ namespace Lagalt_Backend.Controllers
         }
         
         // GET: api/Portfolios/5
+        /// <summary>
+        /// Get a specific portfolio by ID.
+        /// </summary>
+        /// <param name="id">Portfolio ID</param>
+        /// <returns>PortfolioDTO</returns>
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<PortfolioDTO>> GetPortfolio(int id)
@@ -58,9 +76,16 @@ namespace Lagalt_Backend.Controllers
                     });
             }
         }
-        
+
         // PUT: api/Portfolios/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Update a portfolio in the database by ID.
+        /// </summary>
+        /// <param name="id">Portfolio ID</param>
+        /// <param name="portfolioDto">PortfolioPutDTO</param>
+        /// <returns>BadRequest if the ID in the DTO does not match the ID from the URL.
+        /// NoContent if the portfolio is updated successfully.
+        /// NotFound if the update fails.</returns>
         [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> PutPortfolio(int id, PortfolioPutDTO portfolioDto)
@@ -85,12 +110,14 @@ namespace Lagalt_Backend.Controllers
                 });
             };
         }
-        
-        // POST: api/Portfolios
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-
 
         // DELETE: api/Portfolios/5
+        /// <summary>
+        /// Delete a portfolio from the database by ID.
+        /// </summary>
+        /// <param name="id">Portfolio ID</param>
+        /// <returns>NoContent if the request is successful.
+        /// NotFound if the request fails.</returns>
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<IActionResult> DeletePortfolio(int id)

@@ -5,9 +5,15 @@ using Lagalt_Backend.Services.Links;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Net.Mime;
 
 namespace Lagalt_Backend.Controllers
 {
+    [Route("api/links")]
+    [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class LinkController : ControllerBase
     {
         private readonly ILinkService _linkService;
@@ -19,6 +25,10 @@ namespace Lagalt_Backend.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get all links in the database.
+        /// </summary>
+        /// <returns>List<Link></returns>
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<IEnumerable<LinkDto>>> GetAllLinks()
@@ -28,6 +38,12 @@ namespace Lagalt_Backend.Controllers
                 await _linkService.GetAllAsync()));
         }
 
+        /// <summary>
+        /// Get a specific link from the database by ID.
+        /// </summary>
+        /// <param name="id">Link ID</param>
+        /// <returns>LinkDTO if the request is successfull.
+        /// NotFound if the request fails.</returns>
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<LinkDto>> GetLinkById(int id)
@@ -49,6 +65,11 @@ namespace Lagalt_Backend.Controllers
             }
         }
 
+        /// <summary>
+        /// Add a link to the database.
+        /// </summary>
+        /// <param name="linkDto">LinkDTO</param>
+        /// <returns>LinkDTO</returns>
         [HttpPost]
         [Authorize]
         public async Task<ActionResult> AddLink(LinkPostDto linkDto)
@@ -58,6 +79,13 @@ namespace Lagalt_Backend.Controllers
             return CreatedAtAction("GetSkillById", new { id = link.Id }, link);
         }
 
+        /// <summary>
+        /// Update a link in the database.
+        /// </summary>
+        /// <param name="id">Link ID</param>
+        /// <param name="linkDto">LinkDTO</param>
+        /// <returns>NoContent if the update is successfull.
+        /// NotFound if the update fails.</returns>
         [HttpPut("{id}")]
         [Authorize]
         public async Task<ActionResult> UpdateLink(int id, LinkPutDto linkDto)
@@ -81,6 +109,12 @@ namespace Lagalt_Backend.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete a link in the database.
+        /// </summary>
+        /// <param name="id">Link ID</param>
+        /// <returns>NoContent if the deletion is successfull.
+        /// NotFound if the deletion fails.</returns>
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<ActionResult> DeleteLink(int id)
