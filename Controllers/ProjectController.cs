@@ -86,6 +86,25 @@ namespace Lagalt_Backend.Controllers
             }
         }
 
+        [HttpPut("{id}/contributors")]
+        [Authorize]
+        public async Task<ActionResult> UpdateProject(int id, PutContributorProjectDto project)
+        {
+            try
+            {
+                await _projectService.UpdateContributorsAsync(_mapper.Map<Project>(project));
+                return NoContent();
+            } catch (Exception ex)
+            {
+                return NotFound(
+                    new ProblemDetails()
+                    {
+                        Detail = ex.Message,
+                        Status = ((int)HttpStatusCode.NoContent)
+                    });
+            }
+        }
+
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<ActionResult> DeleteProject(int id)
