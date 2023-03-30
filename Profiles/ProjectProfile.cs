@@ -4,6 +4,9 @@ using Lagalt_Backend.Models.Dto.Projects;
 
 namespace Lagalt_Backend.Profiles
 {
+    /// <summary>
+    /// Mappings for Project entity to Post, Put and Read DTOs.
+    /// </summary>
     public class ProjectProfile : Profile
     {
         public ProjectProfile()

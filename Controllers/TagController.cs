@@ -5,10 +5,15 @@ using Lagalt_Backend.Services.Tags;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Net.Mime;
 
 namespace Lagalt_Backend.Controllers
 {
     [Route("api/tags")]
+    [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class TagController : ControllerBase
     {
         private readonly ITagService _tagService;
@@ -20,6 +25,10 @@ namespace Lagalt_Backend.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get all tags from the database.
+        /// </summary>
+        /// <returns>List<TagDTO></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TagDto>>> GetAllTags()
         {
@@ -28,6 +37,11 @@ namespace Lagalt_Backend.Controllers
                 await _tagService.GetAllAsync()));
         }
 
+        /// <summary>
+        /// Get a specific tag from the database by ID.
+        /// </summary>
+        /// <param name="id">Tag ID</param>
+        /// <returns>TagDTO or NotFound if the request fails.</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<TagDto>> GetTagById(int id)
         {
@@ -48,6 +62,11 @@ namespace Lagalt_Backend.Controllers
             }
         }
 
+        /// <summary>
+        /// Add a tag to the database.
+        /// </summary>
+        /// <param name="tagDto">TagPostDTO</param>
+        /// <returns>TagDTO</returns>
         [HttpPost]
         [Authorize]
         public async Task<ActionResult> AddTag(TagPostDto tagDto)
@@ -57,6 +76,13 @@ namespace Lagalt_Backend.Controllers
             return CreatedAtAction("GetSkillById", new { id = tag.Id }, tag);
         }
 
+        /// <summary>
+        /// Update a tag in the database by ID.
+        /// </summary>
+        /// <param name="id">Tag ID</param>
+        /// <param name="tagDto">TagPutDTO</param>
+        /// <returns>NoContent if the update is successful. 
+        /// NotFound if the update fails.</returns>
         [HttpPut("{id}")]
         [Authorize]
         public async Task<ActionResult> UpdateTags(int id, TagPutDto tagDto)
@@ -80,6 +106,12 @@ namespace Lagalt_Backend.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete a tag from the database by ID.
+        /// </summary>
+        /// <param name="id">Tag ID</param>
+        /// <returns>NoContent if the request is successful. 
+        /// NotFound if the request fails.</returns>
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<ActionResult> DeleteTag(int id)

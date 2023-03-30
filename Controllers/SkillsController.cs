@@ -5,11 +5,15 @@ using Lagalt_Backend.Services.Skills;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Net.Mime;
 
 namespace Lagalt_Backend.Controllers
 {
     [Route("api/skills")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class SkillsController : ControllerBase
     {
         private readonly ISkillService _skillService;
@@ -21,6 +25,10 @@ namespace Lagalt_Backend.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get all skills in the database.
+        /// </summary>
+        /// <returns>List<Skill></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SkillDto>>> GetAllSkills()
         {
@@ -29,6 +37,11 @@ namespace Lagalt_Backend.Controllers
                 await _skillService.GetAllAsync()));
         }
 
+        /// <summary>
+        /// Get a specific skill from the database by ID.
+        /// </summary>
+        /// <param name="id">Skill ID</param>
+        /// <returns>SkillDTO or NotFound if the request fails.</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<SkillDto>> GetSkillById(int id)
         {
@@ -49,6 +62,11 @@ namespace Lagalt_Backend.Controllers
             }
         }
 
+        /// <summary>
+        /// Add a skill to the database.
+        /// </summary>
+        /// <param name="skillDto">SkillPostDTO</param>
+        /// <returns>SkillDTO</returns>
         [HttpPost]
         [Authorize]
         public async Task<ActionResult> AddSkill(SkillPostDto skillDto)
@@ -58,6 +76,13 @@ namespace Lagalt_Backend.Controllers
             return CreatedAtAction("GetSkillById", new { id = skill.Id }, skill);
         }
 
+        /// <summary>
+        /// Update a skill in the database by ID.
+        /// </summary>
+        /// <param name="id">Skill ID</param>
+        /// <param name="skillDto">SkillPutDTO</param>
+        /// <returns>NoContent if the update is successful. 
+        /// NotFound if the update fails.</returns>
         [HttpPut("{id}")]
         [Authorize]
         public async Task<ActionResult> UpdateSkill(int id, SkillPutDto skillDto)
@@ -81,6 +106,12 @@ namespace Lagalt_Backend.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete a skill from the database by ID.
+        /// </summary>
+        /// <param name="id">Skill ID</param>
+        /// <returns>NoContent if the request is successful
+        /// NotFound if the request fails.</returns>
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<ActionResult> DeleteSkill(int id)

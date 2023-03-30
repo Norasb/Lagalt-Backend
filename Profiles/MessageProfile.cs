@@ -4,6 +4,9 @@ using Lagalt_Backend.Models.Dto.Message;
 
 namespace Lagalt_Backend.Profiles
 {
+    /// <summary>
+    /// Mappings for Message entity to Post, Put and Read DTOs.
+    /// </summary>
     public class MessageProfile : Profile
     {
         public MessageProfile()
