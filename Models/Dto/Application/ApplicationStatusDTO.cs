@@ -2,10 +2,7 @@
 {
     public class ApplicationStatusDTO
     {
-        public string Motivation { get; set; } = null!;
+        public int Id { get; set; }
         public bool ApprovalStatus { get; set; }
-
-        public string ProjectTitle { get; set; } = null!;
-        public string UserName { get; set; } = null!;
     }
 }

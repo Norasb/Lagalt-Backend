@@ -8,11 +8,15 @@ using Microsoft.AspNetCore.Authorization;
 using Lagalt_Backend.Models.Dto.Application;
 using Lagalt_Backend.Models.Dto.Projects;
 using Lagalt_Backend.Models.Dto.Portfolio;
+using System.Net.Mime;
 
 namespace Lagalt_Backend.Controllers
 {
     [Route("api/users")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -24,14 +28,21 @@ namespace Lagalt_Backend.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/User
+        /// <summary>
+        /// Get all users in the database.
+        /// </summary>
+        /// <returns>List of UserDTOs</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
         {
             return Ok(_mapper.Map<List<UserDTO>>(await _userService.GetAllAsync()));
         }
 
-        // GET: api/User/5
+        /// <summary>
+        /// Get a specific user from the database by ID.
+        /// </summary>
+        /// <param name="id">User ID</param>
+        /// <returns>UserDTO or NotFound if the request fails.</returns>
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<UserDTO>> GetUser(string id)
@@ -51,6 +62,12 @@ namespace Lagalt_Backend.Controllers
             }
         }
 
+        /// <summary>
+        /// Get a users applications by the User ID.
+        /// </summary>
+        /// <param name="id">User ID</param>
+        /// <returns>List of ApplicationsInUserDTOs if the request is successful. 
+        /// NotFound if the request fails.</returns>
         [HttpGet("{id}/applications")]
         [Authorize]
         public async Task<ActionResult<IEnumerable<ApplicationsInUserDto>>> GetUserApplications(string id)
@@ -71,6 +88,11 @@ namespace Lagalt_Backend.Controllers
             }
         }
 
+        /// <summary>
+        /// Get a user's projects by the User ID.
+        /// </summary>
+        /// <param name="id">User ID</param>
+        /// <returns>List of ProjectDTO or NotFound if the request fails.</returns>
         [HttpGet("{id}/projects")]
         public async Task<ActionResult<IEnumerable<ProjectDto>>> GetProjectsByUserId(string id)
         {
@@ -89,6 +111,11 @@ namespace Lagalt_Backend.Controllers
             }
         }
         
+        /// <summary>
+        /// Get project owned by a specific user by the User ID.
+        /// </summary>
+        /// <param name="id">User ID</param>
+        /// <returns>List of ProjectDTOs</returns>
         [HttpGet("{id}/OwnedProjects")]
         public async Task<ActionResult<IEnumerable<ProjectDto>>> GetOnlyOwnedProjectsInUser(string id)
         {
@@ -107,6 +134,11 @@ namespace Lagalt_Backend.Controllers
             }
         }
 
+        /// <summary>
+        /// Get a user's portfolio by User ID.
+        /// </summary>
+        /// <param name="id">User ID</param>
+        /// <returns>List of PortfolioDTO or NotFound if the request fails.</returns>
         [HttpGet("{id}/portfolio")]
         public async Task<ActionResult<PortfolioDTO>> GetPortfolioByUserId(string id)
         {
@@ -123,9 +155,14 @@ namespace Lagalt_Backend.Controllers
             }
         }
 
-
-        // PUT: api/User/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Update a user in the database by ID.
+        /// </summary>
+        /// <param name="id">User ID</param>
+        /// <param name="userDto">UserPutDTO</param>
+        /// <returns>BadRequest if the ID in the DTO does not match the ID in the URL.
+        /// NoContent if the update is successful.
+        /// NotFound if the update fails.</returns>
         [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> PutUser(string id, UserPutDTO userDto)
@@ -151,8 +188,11 @@ namespace Lagalt_Backend.Controllers
             };
         }
 
-        // POST: api/User
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Add a user to the database.
+        /// </summary>
+        /// <param name="userDto">UserPostDTO</param>
+        /// <returns>UserDTO</returns>
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<UserPostDTO>> PostUser(UserPostDTO userDto)
@@ -162,7 +202,12 @@ namespace Lagalt_Backend.Controllers
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
 
-        // DELETE: api/User/5
+        /// <summary>
+        /// Delete a user from the database by ID.
+        /// </summary>
+        /// <param name="id">User ID</param>
+        /// <returns>NoContent if the request is successful.
+        /// NotFound if the request fails.</returns>
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<IActionResult> DeleteUser(string id)

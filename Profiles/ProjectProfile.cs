@@ -4,6 +4,9 @@ using Lagalt_Backend.Models.Dto.Projects;
 
 namespace Lagalt_Backend.Profiles
 {
+    /// <summary>
+    /// Mappings for Project entity to Post, Put and Read DTOs.
+    /// </summary>
     public class ProjectProfile : Profile
     {
         public ProjectProfile()
@@ -31,6 +34,10 @@ namespace Lagalt_Backend.Profiles
                 .MapFrom(dto => dto.Links.Select(url => new Link { URL = url })))
                 .ForMember(p => p.Contributors, opt => opt
                 .MapFrom(dto => dto.UsersContributed.Select(id => new User { Id = id })));
+
+            CreateMap<PutContributorProjectDto, Project>()
+                .ForMember(p => p.Contributors, opt => opt
+                .MapFrom(dto => dto.Contributor.Select(id => new User { Id = id})));
 
 
             CreateMap<Project, ProjectDto>()

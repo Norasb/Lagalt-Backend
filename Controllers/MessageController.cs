@@ -5,11 +5,15 @@ using Lagalt_Backend.Services.Messages;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Net.Mime;
 
 namespace Lagalt_Backend.Controllers
 {
     [Route("api/messages")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class MessageController : ControllerBase
     {
         private readonly IMessageService _messageService;
@@ -21,6 +25,10 @@ namespace Lagalt_Backend.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get all messages from the database.
+        /// </summary>
+        /// <returns>List of MessageDTOs</returns>
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<IEnumerable<MessageDto>>> GetAllMessages()
@@ -30,6 +38,11 @@ namespace Lagalt_Backend.Controllers
                 await _messageService.GetAllAsync()));
         }
 
+        /// <summary>
+        /// Get a specific message from the database.
+        /// </summary>
+        /// <param name="id">Message ID</param>
+        /// <returns>MessageDTO</returns>
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<MessageDto>> GetMessageById(int id)
@@ -51,6 +64,11 @@ namespace Lagalt_Backend.Controllers
             }
         }
 
+        /// <summary>
+        /// Adds a message to the database.
+        /// </summary>
+        /// <param name="postMessage">MessagePostDTO</param>
+        /// <returns>MessageDTO</returns>
         [HttpPost]
         [Authorize]
         public async Task<ActionResult> AddMessage(MessagePostDto postMessage)
@@ -65,6 +83,13 @@ namespace Lagalt_Backend.Controllers
             return CreatedAtAction("GetMessageById", new { id = message.Id }, message);
         }
 
+        /// <summary>
+        /// Update a message in the database by ID.
+        /// </summary>
+        /// <param name="id">Message ID</param>
+        /// <param name="putMessage">MessagePutDTO</param>
+        /// <returns>NoContent if the update is successful.
+        /// Notfound if the update fails.</returns>
         [HttpPut("{id}")]
         [Authorize]
         public async Task<ActionResult> UpdateMessage(int id, MessagePutDto putMessage)
@@ -85,12 +110,18 @@ namespace Lagalt_Backend.Controllers
                      new ProblemDetails()
                      {
                          Detail = ex.Message,
-                         Status = ((int)HttpStatusCode.NoContent)
+                         Status = ((int)HttpStatusCode.NotFound)
                         
                      });
             }
         }
 
+        /// <summary>
+        /// Deletes a message from the database by ID.
+        /// </summary>
+        /// <param name="id">Message ID</param>
+        /// <returns>NoContent if the request is successful.
+        /// NotFound if the request fails.</returns>
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<ActionResult> DeleteMessage(int id)
@@ -105,7 +136,7 @@ namespace Lagalt_Backend.Controllers
                     new ProblemDetails()
                     {
                         Detail = ex.Message,
-                        Status = ((int)HttpStatusCode.NoContent)
+                        Status = ((int)HttpStatusCode.NotFound)
                     });
             }
         }
