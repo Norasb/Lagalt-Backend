@@ -14,14 +14,14 @@ The development is done using .NET 6.0 Model Controller View framework for creat
 
 ## Installations and prerequisites
 In order to clone repo and play with the project yourself, you need to download the following:
-* .NET 6.0 (recommended with visual studio)
-* Microsoft.EntityFrameworkCore.SqlServer
+* .NET 6.0 (recommended with visual studio).
+* Microsoft.EntityFrameworkCore.SqlServer.
 * Change the keycloak.json file to suit own keycloak OIDC JSON.
 
 ### Technologies
 * C#
-* .NET 6.0
-* Azure SQL database
+* .NET 6.0.
+* Azure SQL database.
 
 ## Authors
 The authors of this project are:
