@@ -31,5 +31,5 @@ The authors of this project are:
 * Sverre Vinje
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # User manual
-The following youtube video goes through the functionalities of the website and how to use them: 
+The following youtube video goes through the functionalities of the website and how to use them:__
 https://www.youtube.com/watch?v=C1nhJqucTGk
