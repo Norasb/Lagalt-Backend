@@ -82,5 +82,20 @@ namespace Lagalt_Backend.Services.ApplicationServices
         {
             return await _context.Applications.AnyAsync(a => a.Id == id);
         }
+
+        public async Task UpdateApprovalStatus(int id)
+        {
+            Application application = await _context.Applications.FindAsync(id);
+
+            if (application == null)
+            {
+                throw new Exception("Application not found");
+            }
+
+            application.ApprovalStatus = true;
+
+            _context.Entry(application).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
     }
 }

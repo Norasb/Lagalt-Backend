@@ -23,10 +23,9 @@ namespace Lagalt_Backend.Profiles
                 .MapFrom(a => a.User.UserName));
 
             CreateMap<Application, ApplicationStatusDTO>()
-                .ForMember(dto => dto.UserName, opt => opt
-                .MapFrom(a => a.User.UserName))
-                .ForMember(dto => dto.ProjectTitle, opt => opt
-                .MapFrom(a => a.Project.Title));
+                .ForMember(dto => dto.Id, opt => opt
+                .MapFrom(a => a.Id));
+
             CreateMap<Application, ApplicationsInUserDto>()
                 .ForMember(dto => dto.ProjectId, opt => opt
                 .MapFrom(a => a.ProjectId));

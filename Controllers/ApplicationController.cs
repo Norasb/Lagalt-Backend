@@ -105,5 +105,31 @@ namespace Lagalt_Backend.Controllers
 
             
         }
+
+        /// <summary>
+        /// Updates the approval status of an application in the database by ID.
+        /// </summary>
+        /// <param name="id">Application ID</param>
+        /// <returns>NoContent if the request is successful.
+        /// NotFound if the request fails.</returns>
+        [HttpPut("{id}/approve")]
+        [Authorize]
+        public async Task<IActionResult> UpdateApplicationApprovalStatus(int id)
+        {
+            try
+            {
+                await _applicationService.UpdateApprovalStatus(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return NotFound(
+                    new ProblemDetails()
+                    {
+                        Detail = ex.Message,
+                        Status = (int)HttpStatusCode.NotFound
+                    });
+            }
+        }
     }
 }
