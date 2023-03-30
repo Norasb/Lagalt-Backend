@@ -131,10 +131,6 @@ namespace Lagalt_Backend.Services.Projects
             project.Caption = obj.Caption;
             project.Description = obj.Description;
             project.Progress = obj.Progress;
-            //project.DOC = DateTime.Now;
-            //project.UserId = obj.UserId;
-            //project.Owner = obj.Owner;
-
 
             foreach (var skillName in obj.Skills)
             {
@@ -219,6 +215,28 @@ namespace Lagalt_Backend.Services.Projects
             //    project.Contributors.Remove(contributor);
             //}
 
+
+            _context.Entry(project).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateContributorsAsync(Project obj)
+        {
+            Project project = await _context.Projects
+                .Where(p => p.Id == obj.Id)
+                .Include(p => p.Contributors)
+                .FirstAsync();
+
+            if (project == null)
+            {
+                throw new Exception("Project not found");
+            }
+
+            foreach (var item in obj.Contributors)
+            {
+                var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == item.Id);
+                project.Contributors.Add(user);
+            }
 
             _context.Entry(project).State = EntityState.Modified;
             await _context.SaveChangesAsync();
