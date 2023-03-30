@@ -4,6 +4,9 @@ using Lagalt_Backend.Models.Dto.Application;
 
 namespace Lagalt_Backend.Profiles
 {
+    /// <summary>
+    /// Mappings for Application entity to Post, Put and Read DTOs.
+    /// </summary>
     public class ApplicationProfile : Profile
     {
         public ApplicationProfile()
@@ -23,10 +26,9 @@ namespace Lagalt_Backend.Profiles
                 .MapFrom(a => a.User.UserName));
 
             CreateMap<Application, ApplicationStatusDTO>()
-                .ForMember(dto => dto.UserName, opt => opt
-                .MapFrom(a => a.User.UserName))
-                .ForMember(dto => dto.ProjectTitle, opt => opt
-                .MapFrom(a => a.Project.Title));
+                .ForMember(dto => dto.Id, opt => opt
+                .MapFrom(a => a.Id));
+
             CreateMap<Application, ApplicationsInUserDto>()
                 .ForMember(dto => dto.ProjectId, opt => opt
                 .MapFrom(a => a.ProjectId));
