@@ -16,7 +16,6 @@ The development is done using .NET 6.0 Model Controller View framework for creat
 In order to clone repo and play with the project yourself, you need to download the following:
 * .NET 6.0 (recommended with visual studio)
 * Microsoft.EntityFrameworkCore.SqlServer
-Noe mer Nora??
 
 ### Technologies
 * C#
@@ -32,4 +31,4 @@ The authors of this project are:
 * Sverre Vinje
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # User manual
-The following youtube video showcases how the website can be used: https://www.youtube.com/watch?v=C1nhJqucTGk
+The following youtube video goes through the functionalities of the website and how to use them: 
