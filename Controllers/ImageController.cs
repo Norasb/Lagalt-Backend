@@ -5,11 +5,15 @@ using System.Net;
 using AutoMapper;
 using Lagalt_Backend.Models.Dto.Image;
 using Microsoft.AspNetCore.Authorization;
+using System.Net.Mime;
 
 namespace Lagalt_Backend.Controllers
 {
     [Route("api/images")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class ImageController : ControllerBase
     {
         private readonly IImageService _imageService;
@@ -22,6 +26,10 @@ namespace Lagalt_Backend.Controllers
         }
 
         // GET: api/Image
+        /// <summary>
+        /// Get all images in the database.
+        /// </summary>
+        /// <returns>List<Image></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ImageDTO>>> GetImages()
         {
@@ -31,6 +39,12 @@ namespace Lagalt_Backend.Controllers
         }
 
         // GET: api/Image/5
+        /// <summary>
+        /// Gets a specific image from the database by ID.
+        /// </summary>
+        /// <param name="id">Image ID</param>
+        /// <returns>ImageDTO if the request is successful.
+        /// NotFound if the request fails.</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Image>> GetImage(int id)
         {
@@ -51,7 +65,14 @@ namespace Lagalt_Backend.Controllers
         }
 
         // PUT: api/Image/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Update an image in the database by ID.
+        /// </summary>
+        /// <param name="id">Image ID</param>
+        /// <param name="imageDto">ImageDTO</param>
+        /// <returns>BadRequest if the ID in the DTO does not match the ID from the URL.
+        /// NoContent if the image is updated successfully.
+        /// NotFound if the update fails.</returns>
         [HttpPut("{id}")]
         [Authorize]
         public async Task<ActionResult> PutImage(int id, ImagePutDTO imageDto)
@@ -77,7 +98,11 @@ namespace Lagalt_Backend.Controllers
         }
 
         // POST: api/Image
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Add an image to the database.
+        /// </summary>
+        /// <param name="imageDto">ImageDTO</param>
+        /// <returns>ImagePostDTO</returns>
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<ImagePostDTO>> PostImage(ImagePostDTO imageDto)
@@ -88,6 +113,12 @@ namespace Lagalt_Backend.Controllers
         }
 
         // DELETE: api/Image/5
+        /// <summary>
+        /// Delete an image by ID.
+        /// </summary>
+        /// <param name="id">Image ID</param>
+        /// <returns>NoContent if the image is deleted successfully.
+        /// NotFound if the request fails.</returns>
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<IActionResult> DeleteImage(int id)
