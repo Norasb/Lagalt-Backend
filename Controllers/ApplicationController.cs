@@ -23,7 +23,6 @@ namespace Lagalt_Backend.Controllers
 
         // GET: api/Application
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<IEnumerable<ApplicationDTO>>> GetApplications()
         {
             return Ok(
@@ -78,7 +77,6 @@ namespace Lagalt_Backend.Controllers
 
         // POST: api/Application
         [HttpPost]
-        [Authorize]
         public async Task<ActionResult<ApplicationPostDTO>> PostApplication(ApplicationPostDTO applicationDto)
         {
             Application application = _mapper.Map<Application>(applicationDto);

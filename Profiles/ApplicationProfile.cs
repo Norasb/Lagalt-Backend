@@ -9,8 +9,19 @@ namespace Lagalt_Backend.Profiles
         public ApplicationProfile()
         {
             CreateMap<ApplicationPutDTO, Application>();
-            CreateMap<ApplicationPostDTO, Application>();
-            CreateMap<Application, ApplicationDTO>();
+
+            CreateMap<ApplicationPostDTO, Application>()
+                .ForMember(a => a.UserId, opt => opt
+                .MapFrom(dto => dto.UserId))
+                .ForMember(a => a.ProjectId, opt => opt
+                .MapFrom(dto => dto.ProjectId));
+
+            CreateMap<Application, ApplicationDTO>()
+                .ForMember(dto => dto.ProjectTitle, opt => opt
+                .MapFrom(a => a.Project.Title))
+                .ForMember(dto => dto.UserName, opt => opt
+                .MapFrom(a => a.User.UserName));
+
             CreateMap<Application, ApplicationStatusDTO>()
                 .ForMember(dto => dto.UserName, opt => opt
                 .MapFrom(a => a.User.UserName))
