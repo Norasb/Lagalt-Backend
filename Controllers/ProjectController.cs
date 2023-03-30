@@ -64,13 +64,22 @@ namespace Lagalt_Backend.Controllers
         }
 
         // GET: api/Application/
+        /// <summary>
+        /// Get all application in a project that have not been approved yet from the database by project ID. 
+        /// </summary>
+        /// <param name="id">Project ID</param>
+        /// <returns></returns>
         [HttpGet("{id}/notapproved")]
         public async Task<ActionResult<ApplicationDTO>> GetNotApprovedApplicationsInProject(int id)
         {
             return Ok(_mapper.Map<List<ApplicationStatusDTO>>(await _projectService.GetNotApprovedApplications(id)));
         }
 
-
+        /// <summary>
+        /// Add a project to the database.
+        /// </summary>
+        /// <param name="projectPostDto">ProjectPostDTO</param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize]
         public async Task<ActionResult> AddProject(ProjectPostDto projectPostDto)
@@ -80,6 +89,13 @@ namespace Lagalt_Backend.Controllers
             return CreatedAtAction("GetProjectById", new { id = project.Id }, project);
         }
 
+        /// <summary>
+        /// Update a project in the database by ID.
+        /// </summary>
+        /// <param name="id">Project ID</param>
+        /// <param name="project">ProjectPostDTO</param>
+        /// <returns>NoContent if the update is successful.
+        /// NotFound if the request fails.</returns>
         [HttpPut("{id}")]
         [Authorize]
         public async Task<ActionResult> UpdateProject(int id, ProjectPutDto project)
@@ -126,7 +142,7 @@ namespace Lagalt_Backend.Controllers
         }
 
         /// <summary>
-        /// Gets projects from the database and orders them by which matches the users skills the most.
+        /// Gets projects from the database and orders them by which matches the user's skills the most.
         /// </summary>
         /// <param name="id">User ID</param>
         /// <returns>List<Project></returns>

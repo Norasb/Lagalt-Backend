@@ -111,6 +111,11 @@ namespace Lagalt_Backend.Controllers
             }
         }
         
+        /// <summary>
+        /// Get project owned by a specific user by the User ID.
+        /// </summary>
+        /// <param name="id">User ID</param>
+        /// <returns>List<ProjectDTO></returns>
         [HttpGet("{id}/OwnedProjects")]
         public async Task<ActionResult<IEnumerable<ProjectDto>>> GetOnlyOwnedProjectsInUser(string id)
         {
