@@ -29,7 +29,7 @@ namespace Lagalt_Backend.Controllers
         /// <summary>
         /// Gets all applications in the database.
         /// </summary>
-        /// <returns>List<Application></returns>
+        /// <returns>List of applications</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ApplicationDTO>>> GetApplications()
         {
@@ -102,7 +102,7 @@ namespace Lagalt_Backend.Controllers
         /// Add an application to the database.
         /// </summary>
         /// <param name="applicationDto">ApplicationPostDTO</param>
-        /// <returns></returns>
+        /// <returns>ApplicationDTO</returns>
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<ApplicationPostDTO>> PostApplication(ApplicationPostDTO applicationDto)

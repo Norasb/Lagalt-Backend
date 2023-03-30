@@ -10,6 +10,10 @@ namespace Lagalt_Backend.Services.ApplicationServices
         /// <param name="id">Application ID</param>
         /// <returns>True if the application exists, false if not.</returns>
         public Task<bool> ApplicationExists(int id);
+        /// <summary>
+        /// Update approval status of a project by ID.
+        /// </summary>
+        /// <param name="id">Project ID</param>
         public Task UpdateApprovalStatus(int id);
     }
 }

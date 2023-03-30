@@ -28,7 +28,7 @@ namespace Lagalt_Backend.Controllers
         /// <summary>
         /// Get all messages from the database.
         /// </summary>
-        /// <returns>List<MessageDTO></returns>
+        /// <returns>List of MessageDTOs</returns>
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<IEnumerable<MessageDto>>> GetAllMessages()

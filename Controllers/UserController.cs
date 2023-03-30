@@ -31,7 +31,7 @@ namespace Lagalt_Backend.Controllers
         /// <summary>
         /// Get all users in the database.
         /// </summary>
-        /// <returns>List<UserDTO></returns>
+        /// <returns>List of UserDTOs</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
         {
@@ -66,7 +66,7 @@ namespace Lagalt_Backend.Controllers
         /// Get a users applications by the User ID.
         /// </summary>
         /// <param name="id">User ID</param>
-        /// <returns>List<ApplicationsInUserDTO> if the request is successful. 
+        /// <returns>List of ApplicationsInUserDTOs if the request is successful. 
         /// NotFound if the request fails.</returns>
         [HttpGet("{id}/applications")]
         [Authorize]
@@ -92,7 +92,7 @@ namespace Lagalt_Backend.Controllers
         /// Get a user's projects by the User ID.
         /// </summary>
         /// <param name="id">User ID</param>
-        /// <returns>List<ProjectDTO> or NotFound if the request fails.</returns>
+        /// <returns>List of ProjectDTO or NotFound if the request fails.</returns>
         [HttpGet("{id}/projects")]
         public async Task<ActionResult<IEnumerable<ProjectDto>>> GetProjectsByUserId(string id)
         {
@@ -115,7 +115,7 @@ namespace Lagalt_Backend.Controllers
         /// Get project owned by a specific user by the User ID.
         /// </summary>
         /// <param name="id">User ID</param>
-        /// <returns>List<ProjectDTO></returns>
+        /// <returns>List of ProjectDTOs</returns>
         [HttpGet("{id}/OwnedProjects")]
         public async Task<ActionResult<IEnumerable<ProjectDto>>> GetOnlyOwnedProjectsInUser(string id)
         {
@@ -138,7 +138,7 @@ namespace Lagalt_Backend.Controllers
         /// Get a user's portfolio by User ID.
         /// </summary>
         /// <param name="id">User ID</param>
-        /// <returns>List<PortfolioDTO> or NotFound if the request fails.</returns>
+        /// <returns>List of PortfolioDTO or NotFound if the request fails.</returns>
         [HttpGet("{id}/portfolio")]
         public async Task<ActionResult<PortfolioDTO>> GetPortfolioByUserId(string id)
         {

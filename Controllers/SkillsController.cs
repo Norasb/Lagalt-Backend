@@ -28,7 +28,7 @@ namespace Lagalt_Backend.Controllers
         /// <summary>
         /// Get all skills in the database.
         /// </summary>
-        /// <returns>List<Skill></returns>
+        /// <returns>List of SkillDTOs</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SkillDto>>> GetAllSkills()
         {

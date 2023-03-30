@@ -28,6 +28,11 @@ namespace Lagalt_Backend.Services.UserServices
         /// <param name="userId">User ID</param>
         /// <returns>A single portfolio</returns>
         Task<Portfolio> GetPortfolioInUser(string userId);
+        /// <summary>
+        /// Get project owned by a user by User ID.
+        /// </summary>
+        /// <param name="userId">User ID</param>
+        /// <returns>Collection of projects</returns>
         Task<ICollection<Project>> GetOnlyOwnedProjectsInUser(string userId);
 
     }

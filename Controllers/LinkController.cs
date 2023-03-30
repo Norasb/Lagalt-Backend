@@ -28,7 +28,7 @@ namespace Lagalt_Backend.Controllers
         /// <summary>
         /// Get all links in the database.
         /// </summary>
-        /// <returns>List<Link></returns>
+        /// <returns>List of links</returns>
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<IEnumerable<LinkDto>>> GetAllLinks()

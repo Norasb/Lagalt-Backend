@@ -29,7 +29,7 @@ namespace Lagalt_Backend.Controllers
         /// <summary>
         /// Get all images in the database.
         /// </summary>
-        /// <returns>List<Image></returns>
+        /// <returns>List of images</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ImageDTO>>> GetImages()
         {

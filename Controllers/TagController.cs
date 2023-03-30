@@ -28,7 +28,7 @@ namespace Lagalt_Backend.Controllers
         /// <summary>
         /// Get all tags from the database.
         /// </summary>
-        /// <returns>List<TagDTO></returns>
+        /// <returns>List of TagDTOs</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TagDto>>> GetAllTags()
         {
