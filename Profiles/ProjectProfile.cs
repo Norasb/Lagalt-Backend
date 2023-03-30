@@ -35,6 +35,10 @@ namespace Lagalt_Backend.Profiles
                 .ForMember(p => p.Contributors, opt => opt
                 .MapFrom(dto => dto.UsersContributed.Select(id => new User { Id = id })));
 
+            CreateMap<PutContributorProjectDto, Project>()
+                .ForMember(p => p.Contributors, opt => opt
+                .MapFrom(dto => dto.Contributor.Select(id => new User { Id = id})));
+
 
             CreateMap<Project, ProjectDto>()
                 .ForMember(dto => dto.Owner, opt => opt

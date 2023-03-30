@@ -14,5 +14,6 @@ namespace Lagalt_Backend.Services.Projects
         /// <returns>A collection of projects</returns>
         public Task<ICollection<Project>> GetProjectsBySkill(string skill);
         public Task<ICollection<Application>> GetNotApprovedApplications(int projectId);
+        public Task UpdateContributorsAsync(Project obj);
     }
 }

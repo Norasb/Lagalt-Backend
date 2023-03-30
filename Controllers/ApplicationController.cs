@@ -104,6 +104,7 @@ namespace Lagalt_Backend.Controllers
         /// <param name="applicationDto">ApplicationPostDTO</param>
         /// <returns>ApplicationDTO</returns>
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<ApplicationPostDTO>> PostApplication(ApplicationPostDTO applicationDto)
         {
             Application application = _mapper.Map<Application>(applicationDto);
