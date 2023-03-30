@@ -15,7 +15,20 @@ namespace Lagalt_Backend.Services.ApplicationServices
 
         public async Task AddAsync(Application obj)
         {
-            await _context.Applications.AddAsync(obj);
+            var application = new Application
+            {
+                Motivation = obj.Motivation,
+                ApprovalStatus = false
+            };
+
+            var user = _context.Users.SingleOrDefault(u => u.Id == obj.UserId);
+            application.User = user;
+
+            var project = _context.Projects.SingleOrDefault(p => p.Id == obj.ProjectId);
+            application.Project = project;
+
+
+            await _context.Applications.AddAsync(application);
             await _context.SaveChangesAsync();
         }
 
@@ -34,7 +47,10 @@ namespace Lagalt_Backend.Services.ApplicationServices
 
         public async Task<ICollection<Application>> GetAllAsync()
         {
-            return await _context.Applications.ToListAsync();
+            return await _context.Applications
+                .Include(a => a.User)
+                .Include(a => a.Project)
+                .ToListAsync();
         }
 
         public async Task<Application> GetByIdAsync(int id)
@@ -44,7 +60,11 @@ namespace Lagalt_Backend.Services.ApplicationServices
                 throw new Exception("Application not found");
             }
 
-            return await _context.Applications.FindAsync(id);
+            return await _context.Applications
+                .Where(a => a.Id == id)
+                .Include(a => a.User)
+                .Include(a => a.Project)
+                .FirstAsync();
         }
 
         public async Task UpdateAsync(Application obj)

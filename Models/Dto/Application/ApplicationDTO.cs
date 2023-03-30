@@ -4,12 +4,9 @@ namespace Lagalt_Backend.Models.Dto.Application
 {
     public class ApplicationDTO
     {
-        public int Id { get; set; }
         public string Motivation { get; set; } = null!;
         public bool ApprovalStatus { get; set; }
-
-        // Relationships
-        public int UserId { get; set; }
-        public int ProjectId { get; set; }
+        public string UserName { get; set; } = null!;
+        public string ProjectTitle { get; set; } = null!;
     }
 }
