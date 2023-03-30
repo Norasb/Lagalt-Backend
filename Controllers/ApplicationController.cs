@@ -140,17 +140,5 @@ namespace Lagalt_Backend.Controllers
 
             
         }
-
-        // GET: api/Application/
-        /// <summary>
-        /// ?
-        /// </summary>
-        /// <param name="projectId"></param>
-        /// <returns></returns>
-        [HttpGet("notapproved")]
-        public async Task<ActionResult<ApplicationDTO>> GetNotApprovedApplications(int projectId)
-        {
-            return Ok(_mapper.Map<List<ApplicationStatusDTO>>(await _applicationService.GetNotApprovedApplications(projectId)));
-        }
     }
 }

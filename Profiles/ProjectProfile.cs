@@ -11,11 +11,34 @@ namespace Lagalt_Backend.Profiles
     {
         public ProjectProfile()
         {
-            CreateMap<ProjectPostDto, Project>();
-            CreateMap<ProjectPutDto, Project>();
+            CreateMap<ProjectPostDto, Project>()
+                .ForMember(p => p.Owner, opt => opt
+                .MapFrom(dto => new User { Id = dto.Owner }))
+                .ForMember(p => p.Tags, opt => opt
+                .MapFrom(dto => dto.Tags.Select(tag => new Tag { Name = tag })))
+                .ForMember(p => p.Skills, opt => opt
+                .MapFrom(dto => dto.Skills.Select(skill => new Skill { Name = skill })))
+                .ForMember(p => p.Images, opt => opt
+                .MapFrom(dto => dto.ImageUrls.Select(url => new Image { Url = url })))
+                .ForMember(p => p.Links, opt => opt
+                .MapFrom(dto => dto.Links.Select(url => new Link { URL = url })));
+
+            CreateMap<ProjectPutDto, Project>()
+                .ForMember(p => p.Tags, opt => opt
+                .MapFrom(dto => dto.Tags.Select(tag => new Tag { Name = tag })))
+                .ForMember(p => p.Skills, opt => opt
+                .MapFrom(dto => dto.Skills.Select(skill => new Skill { Name = skill })))
+                .ForMember(p => p.Images, opt => opt
+                .MapFrom(dto => dto.ImageUrls.Select(url => new Image { Url = url })))
+                .ForMember(p => p.Links, opt => opt
+                .MapFrom(dto => dto.Links.Select(url => new Link { URL = url })))
+                .ForMember(p => p.Contributors, opt => opt
+                .MapFrom(dto => dto.UsersContributed.Select(id => new User { Id = id })));
+
+
             CreateMap<Project, ProjectDto>()
                 .ForMember(dto => dto.Owner, opt => opt
-                .MapFrom(p => p.Owner.Id))
+                .MapFrom(p => p.Owner.UserName))
                 .ForMember(dto => dto.Tags, opt => opt
                 .MapFrom(p => p.Tags.Select(t => t.Name).ToList()))
                 .ForMember(dto => dto.Skills, opt => opt

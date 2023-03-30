@@ -13,5 +13,6 @@ namespace Lagalt_Backend.Services.Projects
         /// <param name="skill">Skill name</param>
         /// <returns>A collection of projects</returns>
         public Task<ICollection<Project>> GetProjectsBySkill(string skill);
+        public Task<ICollection<Application>> GetNotApprovedApplications(int projectId);
     }
 }

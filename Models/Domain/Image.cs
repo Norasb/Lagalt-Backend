@@ -6,7 +6,7 @@ namespace Lagalt_Backend.Models.Domain
     public class Image
     {
         public int Id { get; set; }
-        public string Description { get; set; } = null!;
+        public string? Description { get; set; } = null!;
         public string Url { get; set; } = null!;
 
         // Relationships

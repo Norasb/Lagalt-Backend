@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Lagalt_Backend.Models.Domain;
+using Lagalt_Backend.Models.Dto.Application;
 using Lagalt_Backend.Models.Dto.Projects;
 using Lagalt_Backend.Services.Projects;
 using Microsoft.AspNetCore.Authorization;
@@ -62,11 +63,15 @@ namespace Lagalt_Backend.Controllers
             }
         }
 
-        /// <summary>
-        /// Add a project to the database.
-        /// </summary>
-        /// <param name="projectPostDto">ProjectPostDTO</param>
-        /// <returns>ProjectOneDTO</returns>
+        // GET: api/Application/
+        [HttpGet("{id}/notapproved")]
+        [Authorize]
+        public async Task<ActionResult<ApplicationDTO>> GetNotApprovedApplicationsInProject(int id)
+        {
+            return Ok(_mapper.Map<List<ApplicationStatusDTO>>(await _projectService.GetNotApprovedApplications(id)));
+        }
+
+
         [HttpPost]
         [Authorize]
         public async Task<ActionResult> AddProject(ProjectPostDto projectPostDto)
@@ -76,13 +81,6 @@ namespace Lagalt_Backend.Controllers
             return CreatedAtAction("GetProjectById", new { id = project.Id }, project);
         }
 
-        /// <summary>
-        /// Update a project in the database by ID.
-        /// </summary>
-        /// <param name="id">Project ID</param>
-        /// <param name="project">ProjectPutDTO</param>
-        /// <returns>NoContent if the update is successful.
-        /// NotFound if the update fails.</returns>
         [HttpPut("{id}")]
         [Authorize]
         public async Task<ActionResult> UpdateProject(int id, ProjectPutDto project)

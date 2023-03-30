@@ -15,6 +15,7 @@ namespace Lagalt_Backend.Profiles
             CreateMap<SkillPostDto, Skill>();
             CreateMap<SkillPutDto, Skill>();
             CreateMap<Skill, SkillDto>();
+            CreateMap<SkillUserDto, Skill>();
         }
         
     }

@@ -56,7 +56,21 @@ namespace Lagalt_Backend.Services.UserServices
             var user = await _context.Users
                 .Where(u => u.Id == userId)
                 .Include(u => u.OwnedProjects)
+                    .ThenInclude(p => p.Skills)
+                .Include(u => u.OwnedProjects)
+                    .ThenInclude(p => p.Tags)
+                .Include(u => u.OwnedProjects)
+                    .ThenInclude(p => p.Images)
+                .Include(u => u.OwnedProjects)
+                    .ThenInclude(p => p.Owner)
                 .Include(u => u.ContributedProjects)
+                    .ThenInclude(p => p.Skills)
+                .Include(u => u.ContributedProjects)
+                    .ThenInclude(p => p.Tags)
+                .Include(u => u.ContributedProjects)
+                    .ThenInclude(p => p.Images)
+                .Include(u => u.ContributedProjects)
+                    .ThenInclude(p => p.Owner)
                 .Select(u => new
                 {
                     u.OwnedProjects,
@@ -99,6 +113,21 @@ namespace Lagalt_Backend.Services.UserServices
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<ICollection<Project>> GetOnlyOwnedProjectsInUser(string userId)
+        {
+            if (!await UserExists(userId))
+            {
+                throw new Exception("User does not exist");
+            }
+
+            return await _context.Users
+                .Where(u => u.Id == userId)
+                .Include(u => u.OwnedProjects)
+                .Select(u => u.OwnedProjects)
+                .FirstAsync();
+
+        }
+
 
         public async Task AddAsync(User obj)
         {
@@ -124,9 +153,22 @@ namespace Lagalt_Backend.Services.UserServices
             if (!await UserExists(obj.Id))
             {
                 throw new Exception("User not found");
-
             }
-            _context.Entry(obj).State = EntityState.Modified;
+
+            User user = await _context.Users
+                .Where(u => u.Id == obj.Id)
+                .Include(u => u.Skills)
+                .FirstAsync();
+
+            user.Description = obj.Description;
+
+            foreach (var skillName in obj.Skills)
+            {
+                var skill = await _context.Skills.SingleOrDefaultAsync(s => s.Name == skillName.Name);
+                user.Skills.Add(skill);
+            }
+            
+            _context.Entry(user).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 

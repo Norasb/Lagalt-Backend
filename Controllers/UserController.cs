@@ -69,7 +69,8 @@ namespace Lagalt_Backend.Controllers
         /// <returns>List<ApplicationsInUserDTO> if the request is successful. 
         /// NotFound if the request fails.</returns>
         [HttpGet("{id}/applications")]
-        public async Task<ActionResult<IEnumerable<ApplicationsInUserDto>>> GetUsersApplications(string id)
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<ApplicationsInUserDto>>> GetUserApplications(string id)
         {
             try
             {
@@ -93,7 +94,7 @@ namespace Lagalt_Backend.Controllers
         /// <param name="id">User ID</param>
         /// <returns>List<ProjectDTO> or NotFound if the request fails.</returns>
         [HttpGet("{id}/projects")]
-        public async Task<ActionResult<IEnumerable<ProjectDto>>> GetProjectByUserId(string id)
+        public async Task<ActionResult<IEnumerable<ProjectDto>>> GetProjectsByUserId(string id)
         {
             try
             {
@@ -105,7 +106,25 @@ namespace Lagalt_Backend.Controllers
                 return NotFound(new ProblemDetails()
                 {
                     Detail = ex.Message,
-                    Status = ((int)HttpStatusCode.NotFound)
+                    Status = (int)HttpStatusCode.NotFound
+                });
+            }
+        }
+        
+        [HttpGet("{id}/OwnedProjects")]
+        public async Task<ActionResult<IEnumerable<ProjectDto>>> GetOnlyOwnedProjectsInUser(string id)
+        {
+            try
+            {
+                return Ok(_mapper.Map<List<ProjectDto>>(await _userService.GetOnlyOwnedProjectsInUser(id)));
+
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new ProblemDetails()
+                {
+                    Detail = ex.Message,
+                    Status = (int)HttpStatusCode.NotFound
                 });
             }
         }
@@ -160,6 +179,7 @@ namespace Lagalt_Backend.Controllers
                     Detail = ex.Message,
                     Status = ((int)HttpStatusCode.NotFound)
                 });
+                
             };
         }
 
